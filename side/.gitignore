@@ -357,4 +357,7 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,git,java,maven,eclipse,intellij,gradle,netbeans,visualstudiocode
 application.yml
-..\.idea\*.xml
+side\.idea\*.xml
+side\.idea\*.iml
+side\.idea\*.properties
+side\.idea\*.jar
