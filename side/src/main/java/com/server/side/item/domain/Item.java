@@ -1,4 +1,4 @@
-package com.server.side.item;
+package com.server.side.item.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
