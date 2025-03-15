@@ -12,6 +12,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "Items")
+@EqualsAndHashCode
 @EntityListeners(AuditingEntityListener.class)
 public class Item {
 
