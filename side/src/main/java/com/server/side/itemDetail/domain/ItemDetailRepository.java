@@ -1,4 +1,4 @@
-package com.server.side.ItemDetail.domain;
+package com.server.side.itemDetail.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
