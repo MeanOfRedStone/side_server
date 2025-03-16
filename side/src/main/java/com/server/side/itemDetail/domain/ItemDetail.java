@@ -1,4 +1,4 @@
-package com.server.side.ItemDetail.domain;
+package com.server.side.itemDetail.domain;
 
 import com.server.side.item.domain.Item;
 import jakarta.persistence.*;
@@ -34,5 +34,13 @@ public class ItemDetail {
 
     @LastModifiedDate
     private Instant modifiedDate;
+
+    @Builder
+    public ItemDetail(long id, Item item, String option, int quantity) {
+        this.id = id;
+        this.item = item;
+        this.option = option;
+        this.quantity = quantity;
+    }
 
 }
