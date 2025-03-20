@@ -2,15 +2,13 @@ package com.server.side.itemDetail.dto;
 
 import com.server.side.item.domain.Item;
 import com.server.side.itemDetail.domain.ItemDetail;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class ItemDetailRegistrationRequest {
 
     private Item item;
@@ -21,6 +19,14 @@ public class ItemDetailRegistrationRequest {
 
     public ItemDetail toEntity() {
         return ItemDetail.builder()
+                .item(this.item)
+                .option(this.option)
+                .quantity(this.quantity)
+                .build();
+    }
+
+    public ItemDetailDTO toResponse() {
+        return ItemDetailDTO.builder()
                 .item(this.item)
                 .option(this.option)
                 .quantity(this.quantity)
