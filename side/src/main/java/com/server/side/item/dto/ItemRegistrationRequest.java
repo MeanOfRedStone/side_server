@@ -1,15 +1,13 @@
 package com.server.side.item.dto;
 
 import com.server.side.item.domain.Item;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class ItemRegistrationRequest {
 
     private String name;
@@ -35,4 +33,14 @@ public class ItemRegistrationRequest {
                 .build();
     }
 
+    public ItemDto toResponse() {
+        return ItemDto.builder()
+                .name(this.name)
+                .price(this.price)
+                .category(this.category)
+                .image(this.image)
+                .information(this.information)
+                .measurement(this.measurement)
+                .build();
+    }
 }
