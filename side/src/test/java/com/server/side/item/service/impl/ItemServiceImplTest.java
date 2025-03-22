@@ -3,6 +3,7 @@ package com.server.side.item.service.impl;
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemRegistrationRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +16,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceImplTest {
 

@@ -5,6 +5,7 @@ import com.server.side.itemDetail.domain.ItemDetail;
 import com.server.side.itemDetail.domain.ItemDetailRepository;
 import com.server.side.itemDetail.dto.ItemDetailRegistrationRequest;
 import com.server.side.itemDetail.service.impl.ItemDetailServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@Slf4j
 @ExtendWith(MockitoExtension.class)
 public class ItemDetailServiceTest {
 
