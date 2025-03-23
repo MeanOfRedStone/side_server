@@ -6,22 +6,21 @@ import com.server.side.itemDetail.service.ItemDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/items")
+@RequestMapping("/items/{itemId}/details")
 public class ItemDetailController {
 
     private final ItemDetailService service;
 
     @PostMapping
-    public ResponseEntity<ItemDetailDTO> createItemDetail(@RequestBody ItemDetailRegistrationRequest request) {
+    public ResponseEntity<ItemDetailDTO> createItemDetail(
+            @PathVariable Long itemId,
+            @RequestBody ItemDetailRegistrationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(fromEntity(service.addItemDetail(request)));
     }
 }

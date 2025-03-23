@@ -67,7 +67,7 @@ public class ItemDetailControllerTest {
         given(itemDetailService.addItemDetail(eq(request1))).willReturn(request1.toEntity());
 
         ResultActions actions = mockMvc.perform(
-                post("/items")
+                post("/items/{itemId}/details", item.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(request1))
@@ -89,7 +89,7 @@ public class ItemDetailControllerTest {
         given(itemDetailService.addItemDetail(eq(request2))).willReturn(request2.toEntity());
 
         ResultActions actions2 = mockMvc.perform(
-                post("/items")
+                post("/items/{itemId}/details", item.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(request2))
@@ -100,7 +100,5 @@ public class ItemDetailControllerTest {
                 .andExpect(jsonPath("$.item.id").value(dto2.getItem().getId()))
                 .andExpect(jsonPath("$.option").value(dto2.getOption()))
                 .andExpect(jsonPath("$.quantity").value(dto2.getQuantity()));
-
-
     }
 }
