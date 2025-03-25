@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.server.side.item.dto.ItemDto.fromEntity;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
@@ -22,6 +20,6 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<ItemDto> createItem(@RequestBody ItemRegistrationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(fromEntity(service.addItem(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addItem(request));
     }
 }

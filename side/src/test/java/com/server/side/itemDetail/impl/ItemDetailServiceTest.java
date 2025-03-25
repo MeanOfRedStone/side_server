@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -47,7 +48,7 @@ public class ItemDetailServiceTest {
         given(itemDetailRepository.save(any(ItemDetail.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
-        assertEquals(request1.toEntity(), itemDetailService.addItemDetail(request1));
+        assertEquals(fromEntity(request1.toEntity()), itemDetailService.addItemDetail(request1));
 
         verify(itemDetailRepository, times(1)).save(request1.toEntity());
 
@@ -57,7 +58,7 @@ public class ItemDetailServiceTest {
                 .quantity(50)
                 .build();
 
-        assertEquals(request2.toEntity(), itemDetailService.addItemDetail(request2));
+        assertEquals(fromEntity(request2.toEntity()), itemDetailService.addItemDetail(request2));
 
         verify(itemDetailRepository, times(1)).save(request2.toEntity());
     }

@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Instant;
 
+import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -64,7 +65,7 @@ public class ItemDetailControllerTest {
                 .build();
         ItemDetailDTO dto1 = request1.toResponse();
 
-        given(itemDetailService.addItemDetail(eq(request1))).willReturn(request1.toEntity());
+        given(itemDetailService.addItemDetail(eq(request1))).willReturn(fromEntity(request1.toEntity()));
 
         ResultActions actions = mockMvc.perform(
                 post("/items/{itemId}/details", item.getId())
@@ -86,7 +87,7 @@ public class ItemDetailControllerTest {
                 .build();
         ItemDetailDTO dto2 = request2.toResponse();
 
-        given(itemDetailService.addItemDetail(eq(request2))).willReturn(request2.toEntity());
+        given(itemDetailService.addItemDetail(eq(request2))).willReturn(fromEntity(request2.toEntity()));
 
         ResultActions actions2 = mockMvc.perform(
                 post("/items/{itemId}/details", item.getId())

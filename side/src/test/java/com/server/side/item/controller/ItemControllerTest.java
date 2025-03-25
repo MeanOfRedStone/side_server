@@ -12,6 +12,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.server.side.item.dto.ItemDto.fromEntity;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -43,7 +44,7 @@ public class ItemControllerTest {
         ItemDto dto1 = request1.toResponse();
 
         given(itemService.addItem(eq(request1)))
-                .willReturn(request1.toEntity());
+                .willReturn(fromEntity(request1.toEntity()));
 
         ResultActions actions = mockMvc.perform(
                 post("/items")

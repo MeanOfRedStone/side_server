@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items/{itemId}/details")
@@ -21,6 +19,6 @@ public class ItemDetailController {
     public ResponseEntity<ItemDetailDTO> createItemDetail(
             @PathVariable Long itemId,
             @RequestBody ItemDetailRegistrationRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(fromEntity(service.addItemDetail(request)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.addItemDetail(request));
     }
 }
