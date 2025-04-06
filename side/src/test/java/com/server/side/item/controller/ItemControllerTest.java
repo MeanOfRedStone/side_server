@@ -12,6 +12,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static com.server.side.item.dto.ItemDto.fromEntity;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -38,8 +41,7 @@ public class ItemControllerTest {
                 .price(1000)
                 .category("상의")
                 .image("셔츠.png")
-                .information("멋진 셔츠")
-                .measurement("L - 100")
+                .information(new ArrayList<>(Arrays.asList("img1", "img2")))
                 .build();
         ItemDto dto1 = request1.toResponse();
 
@@ -59,7 +61,6 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.price").value(dto1.getPrice()))
                 .andExpect(jsonPath("$.category").value(dto1.getCategory()))
                 .andExpect(jsonPath("$.image").value(dto1.getImage()))
-                .andExpect(jsonPath("$.information").value(dto1.getInformation()))
-                .andExpect(jsonPath("$.measurement").value(dto1.getMeasurement()));
+                .andExpect(jsonPath("$.information").value(dto1.getInformation()));
     }
 }

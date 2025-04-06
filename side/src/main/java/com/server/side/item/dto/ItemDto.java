@@ -3,6 +3,8 @@ package com.server.side.item.dto;
 import com.server.side.item.domain.Item;
 import lombok.*;
 
+import java.util.ArrayList;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +22,7 @@ public class ItemDto {
 
     private String image;
 
-    private String information;
-
-    private String measurement;
+    private ArrayList<String> information;
 
     public static ItemDto fromEntity(Item item) {
         return ItemDto.builder()
@@ -32,7 +32,6 @@ public class ItemDto {
                 .category(item.getCategory())
                 .image(item.getImage())
                 .information(item.getInformation())
-                .measurement(item.getMeasurement())
                 .build();
     }
 

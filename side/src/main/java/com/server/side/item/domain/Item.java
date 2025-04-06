@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class Item {
 
     private String image;
 
-    private String information;
+    private ArrayList<String> information;
 
     private String measurement;
 
@@ -40,14 +41,13 @@ public class Item {
 
     @Builder
     public Item(long id, String name, int price, String category,
-                String image, String information, String measurement) {
+                String image, ArrayList<String> information) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.category  = category;
         this.image = image;
         this.information = information;
-        this.measurement = measurement;
     }
 
 }

@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
 import static org.mockito.ArgumentMatchers.eq;
@@ -54,8 +56,7 @@ public class ItemDetailControllerTest {
                 .price(1000)
                 .category("상의")
                 .image("셔츠.png")
-                .information("멋진 셔츠")
-                .measurement("L - 100")
+                .information(new ArrayList<>(Arrays.asList("img1", "img2")))
                 .build();
 
         ItemDetailRegistrationRequest request1 = ItemDetailRegistrationRequest.builder()

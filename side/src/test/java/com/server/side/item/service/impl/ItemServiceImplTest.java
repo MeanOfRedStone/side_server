@@ -10,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static com.server.side.item.dto.ItemDto.fromEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,8 +36,7 @@ public class ItemServiceImplTest {
                 .price(1000)
                 .category("상의")
                 .image("셔츠.png")
-                .information("멋진 셔츠")
-                .measurement("L - 100")
+                .information(new ArrayList<>(Arrays.asList("img1", "img2")))
                 .build();
 
         given(itemRepository.save(any(Item.class)))
@@ -48,8 +50,7 @@ public class ItemServiceImplTest {
                 .price(2000)
                 .category("하의")
                 .image("청바지.png")
-                .information("멋진 청바지")
-                .measurement("XL - 32")
+                .information(new ArrayList<>(Arrays.asList("img3", "img4")))
                 .build();
 
         assertEquals(fromEntity(request2.toEntity()), itemService.addItem(request2));
