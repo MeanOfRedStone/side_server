@@ -31,8 +31,6 @@ public class Item {
 
     private ArrayList<String> information;
 
-    private String measurement;
-
     @CreatedDate
     private Instant createdDate;
 
