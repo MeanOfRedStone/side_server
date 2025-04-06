@@ -21,4 +21,7 @@ public class ItemDetailController {
             @RequestBody ItemDetailRegistrationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addItemDetail(request));
     }
+
+//    @GetMapping
+//    public ResponseEntity<>
 }

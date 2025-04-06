@@ -3,7 +3,7 @@ package com.server.side.item.dto;
 import com.server.side.item.domain.Item;
 import lombok.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class ItemRegistrationRequest {
 
     private String image;
 
-    private ArrayList<String> information;
+    private List<String> information;
 
     public Item toEntity() {
         return Item.builder()

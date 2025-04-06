@@ -12,8 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static com.server.side.itemDetail.dto.ItemDetailDTO.fromEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +38,7 @@ public class ItemDetailServiceTest {
                 .price(1000)
                 .category("상의")
                 .image("셔츠.png")
-                .information(new ArrayList<>(Arrays.asList("img1", "img2")))
+                .information(List.of("img1", "img2"))
                 .build();
         ItemDetailRegistrationRequest request1 = ItemDetailRegistrationRequest.builder()
                                                                             .item(item)
