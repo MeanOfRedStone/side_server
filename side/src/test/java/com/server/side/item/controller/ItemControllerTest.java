@@ -18,9 +18,9 @@ import static com.server.side.item.dto.ItemDto.fromEntity;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ItemController.class)
 public class ItemControllerTest {
@@ -62,5 +62,35 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.category").value(dto1.getCategory()))
                 .andExpect(jsonPath("$.image").value(dto1.getImage()))
                 .andExpect(jsonPath("$.information", containsInAnyOrder(dto1.getInformation().toArray(new String[0]))));
+    }
+
+    @Test
+    void itemListThenReturnAllItems() throws Exception{
+        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(1000)
+                .category("상의")
+                .image("셔츠.png")
+                .information(List.of("img1", "img2"))
+                .build();
+
+        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+                .name("청바지")
+                .price(2000)
+                .category("하의")
+                .image("청바지.png")
+                .information(List.of("img1", "img2"))
+                .build();
+
+        List<ItemDto> expectedList = List.of(fromEntity(request1.toEntity()), fromEntity(request2.toEntity()));
+        given(itemService.findAllItems()).willReturn(expectedList);
+
+        ResultActions actions = mockMvc.perform(
+                get("/items")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        actions.andExpect(status().isOk())
+                .andExpect(content().json(gson.toJson(expectedList)));
     }
 }
