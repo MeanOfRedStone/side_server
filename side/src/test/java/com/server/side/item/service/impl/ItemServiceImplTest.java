@@ -84,5 +84,6 @@ public class ItemServiceImplTest {
         List<ItemDto> expected = List.of(fromEntity(request1.toEntity()), fromEntity(request2.toEntity()));
 
         assertEquals(result, expected);
+        verify(itemRepository, times(1)).findAll();
     }
 }
