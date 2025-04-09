@@ -7,6 +7,9 @@ import com.server.side.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.server.side.item.dto.ItemDto.fromEntity;
 
 @Service
@@ -18,5 +21,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemDto addItem(ItemRegistrationRequest request) {
         return fromEntity(repository.save(request.toEntity()));
+    }
+
+    @Override
+    public List<ItemDto> findAllItems() {
+        return repository.findAll().stream()
+                .map(ItemDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
