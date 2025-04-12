@@ -10,7 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static com.server.side.item.dto.ItemDto.fromEntity;
@@ -30,32 +34,63 @@ public class ItemServiceImplTest {
     ItemRepository itemRepository;
 
     @Test
-    void addItemThenReturnSame() {
+    void addItemThenReturnSame() throws Exception {
+        String dir = "../uploads/images/";
+        MockMultipartFile thumbnail = new MockMultipartFile(
+                "thumbnail",
+                "thumbnail.jpg",
+                "image/jpeg",
+                "dummy-thumbnail-content".getBytes()
+        );
+
+        List<MultipartFile> detailImages = List.of(
+                new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", "img1".getBytes()),
+                new MockMultipartFile("detail2", "detail2.jpg", "image/jpeg", "img2".getBytes())
+        );
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
-                .image("셔츠.png")
-                .information(List.of("img1", "img2"))
                 .build();
 
         given(itemRepository.save(any(Item.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
-        assertEquals(fromEntity(request1.toEntity()), itemService.addItem(request1));
-        verify(itemRepository, times(1)).save(request1.toEntity());
+        ItemDto result1 = itemService.addItem(request1, thumbnail, detailImages);
+        assertEquals(request1.getName(), result1.getName());
+        assertEquals(request1.getPrice(), result1.getPrice());
+        assertEquals(request1.getCategory(), result1.getCategory());
+        assertEquals(dir + thumbnail.getOriginalFilename().toString(), result1.getImage());
+        for(int i = 0; i < detailImages.size(); i++) {
+            assertEquals(dir + detailImages.get(i).getOriginalFilename().toString(), result1.getInformation().get(i));
+        }
+        verify(itemRepository, times(1)).save(any(Item.class));
+
+        Files.deleteIfExists(Path.of(result1.getImage()));
+        for (String path : result1.getInformation()) {
+            Files.deleteIfExists(Path.of(path));
+        }
 
         ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
                 .name("청바지")
                 .price(2000)
                 .category("하의")
-                .image("청바지.png")
-                .information(List.of("img1", "img2"))
                 .build();
 
-        assertEquals(fromEntity(request2.toEntity()), itemService.addItem(request2));
-        verify(itemRepository, times(1)).save(request2.toEntity());
+        ItemDto result2 = itemService.addItem(request2, thumbnail, detailImages);
+        assertEquals(request2.getName(), result2.getName());
+        assertEquals(request2.getPrice(), result2.getPrice());
+        assertEquals(request2.getCategory(), result2.getCategory());
+        assertEquals(dir + thumbnail.getOriginalFilename().toString(), result2.getImage());
+        for(int i = 0; i < detailImages.size(); i++) {
+            assertEquals(dir + detailImages.get(i).getOriginalFilename().toString(), result2.getInformation().get(i));
+        }
+        verify(itemRepository, times(2)).save(any(Item.class));
 
+        Files.deleteIfExists(Path.of(result2.getImage()));
+        for (String path : result2.getInformation()) {
+            Files.deleteIfExists(Path.of(path));
+        }
     }
 
     @Test
