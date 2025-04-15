@@ -1,6 +1,7 @@
 package com.server.side.item.controller;
 
 import com.google.gson.Gson;
+import com.server.side.item.domain.Item;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.item.service.impl.ItemServiceImpl;
@@ -8,18 +9,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.server.side.item.dto.ItemDto.fromEntity;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ItemController.class)
@@ -36,32 +42,71 @@ public class ItemControllerTest {
 
     @Test
     void createItemThenReturnSameItem() throws Exception {
+
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
-                .image("셔츠.png")
-                .information(List.of("img1", "img2"))
                 .build();
-        ItemDto dto1 = request1.toResponse();
+        String requestJson = gson.toJson(request1);
 
-        given(itemService.addItem(eq(request1)))
-                .willReturn(fromEntity(request1.toEntity()));
-
-        ResultActions actions = mockMvc.perform(
-                post("/items")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(request1))
+        MockMultipartFile requestPart = new MockMultipartFile(
+                "request",         // @RequestPart 이름
+                "",                // 파일 이름 필요 없음
+                "application/json",
+                requestJson.getBytes()
         );
 
-        actions
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value(dto1.getName()))
-                .andExpect(jsonPath("$.price").value(dto1.getPrice()))
-                .andExpect(jsonPath("$.category").value(dto1.getCategory()))
-                .andExpect(jsonPath("$.image").value(dto1.getImage()))
-                .andExpect(jsonPath("$.information", containsInAnyOrder(dto1.getInformation().toArray(new String[0]))));
+        MockMultipartFile thumbnail = new MockMultipartFile(
+                "thumbnailImage",
+                "thumbnail.jpg",
+                "image/jpeg",
+                "dummy-thumbnail-content".getBytes()
+        );
+
+        List<MockMultipartFile> detailImages = List.of(
+                new MockMultipartFile("detailImages", "detail1.jpg", "image/jpeg", "img1".getBytes()),
+                new MockMultipartFile("detailImages", "detail2.jpg", "image/jpeg", "img2".getBytes())
+        );
+
+        List<String> detailImagePaths = detailImages.stream()
+                .map(MockMultipartFile::getOriginalFilename)
+                .collect(Collectors.toList());
+
+        Item requestedItem = request1.toEntity();
+        requestedItem.setImage(thumbnail.getOriginalFilename().toString());
+        requestedItem.setInformation(detailImagePaths);
+
+        ItemDto result1 = fromEntity(requestedItem);
+
+        given(itemService.addItem(
+                eq(request1),
+                eq(thumbnail),
+                argThat(list -> list.size() == detailImages.size() &&
+                        IntStream.range(0, list.size())
+                                .allMatch(i -> list.get(i).getOriginalFilename().equals(detailImages.get(i).getOriginalFilename())))
+        )).willReturn(result1);
+
+        MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/items")
+                .file(requestPart)
+                .file(thumbnail);
+
+        for(MockMultipartFile detailImage : detailImages) {
+            multipartRequest.file(detailImage);
+        }
+
+        multipartRequest
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .accept(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(multipartRequest)
+                        .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(result1.getName()))
+                .andExpect(jsonPath("$.price").value(result1.getPrice()))
+                .andExpect(jsonPath("$.category").value(result1.getCategory()))
+                .andExpect(jsonPath("$.image").value(result1.getImage()))
+                .andExpect(jsonPath("$.information", containsInAnyOrder(result1.getInformation().toArray(new String[0]))));
+
     }
 
     @Test
