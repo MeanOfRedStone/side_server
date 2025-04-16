@@ -1,6 +1,7 @@
 package com.server.side.item.dto;
 
 import com.server.side.item.domain.Item;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class ItemRegistrationRequest {
 
+    @NotBlank(message = "{item.name.notblank}")
     private String name;
 
     private int price;
