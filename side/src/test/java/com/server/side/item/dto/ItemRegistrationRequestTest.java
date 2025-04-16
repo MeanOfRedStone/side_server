@@ -22,7 +22,9 @@ public class ItemRegistrationRequestTest {
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
 
-        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("name"));
+        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("name")
+                && v.getMessage().equals("{item.name.notblank}"));
+
 
         ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
                 .name("")
@@ -31,7 +33,8 @@ public class ItemRegistrationRequestTest {
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
 
-        assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("name"));
+        assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("name")
+                && v.getMessage().equals("{item.name.notblank}"));
 
         ItemRegistrationRequest request3 = ItemRegistrationRequest.builder()
                 .name(" ")
@@ -40,6 +43,7 @@ public class ItemRegistrationRequestTest {
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
 
-        assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("name"));
+        assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("name")
+                && v.getMessage().equals("{item.name.notblank}"));
     }
 }
