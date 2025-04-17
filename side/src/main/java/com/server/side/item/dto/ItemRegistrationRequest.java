@@ -1,6 +1,7 @@
 package com.server.side.item.dto;
 
 import com.server.side.item.domain.Item;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -15,9 +16,9 @@ public class ItemRegistrationRequest {
 
     @NotBlank(message = "{item.name.notblank}")
     private String name;
-
+    @Min(value = 0, message = "{item.price.min}")
     private int price;
-
+    @NotBlank(message = "{item.category.notblank}")
     private String category;
 
     private String image;
