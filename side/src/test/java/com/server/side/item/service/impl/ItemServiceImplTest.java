@@ -88,16 +88,6 @@ public class ItemServiceImplTest {
         deleteFile(result2);
     }
 
-    private void assertItem(ItemRegistrationRequest request, ItemDto result, MockMultipartFile thumbnail, List<MultipartFile> detailImages) {
-        assertEquals(request.getName(), result.getName());
-        assertEquals(request.getPrice(), result.getPrice());
-        assertEquals(request.getCategory(), result.getCategory());
-        assertEquals(fileProperties.getUploadDir() + thumbnail.getOriginalFilename().toString(), result.getImage());
-        for(int i = 0; i < detailImages.size(); i++) {
-            assertEquals(fileProperties.getUploadDir() + detailImages.get(i).getOriginalFilename().toString(), result.getInformation().get(i));
-        }
-    }
-
     @Test
     void shouldFailWhenThumbNailIsNull() throws Exception{
         ItemRegistrationRequest request = ItemRegistrationRequest.builder()
@@ -157,6 +147,16 @@ public class ItemServiceImplTest {
 
         assertEquals(result, expected);
         verify(itemRepository, times(1)).findAll();
+    }
+
+    private void assertItem(ItemRegistrationRequest request, ItemDto result, MockMultipartFile thumbnail, List<MultipartFile> detailImages) {
+        assertEquals(request.getName(), result.getName());
+        assertEquals(request.getPrice(), result.getPrice());
+        assertEquals(request.getCategory(), result.getCategory());
+        assertEquals(fileProperties.getUploadDir() + thumbnail.getOriginalFilename().toString(), result.getImage());
+        for(int i = 0; i < detailImages.size(); i++) {
+            assertEquals(fileProperties.getUploadDir() + detailImages.get(i).getOriginalFilename().toString(), result.getInformation().get(i));
+        }
     }
 
     private void deleteFile(ItemDto result) throws Exception{
