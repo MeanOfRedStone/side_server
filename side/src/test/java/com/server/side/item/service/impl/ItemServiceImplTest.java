@@ -1,6 +1,7 @@
 package com.server.side.item.service.impl;
 
 import com.server.side.config.FileProperties;
+import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemDto;
@@ -20,18 +21,19 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static com.server.side.item.dto.ItemDto.fromEntity;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceImplTest {
 
     @Mock
-    private FileProperties fileProperties;
+    FileProperties fileProperties;
     @InjectMocks
     ItemServiceImpl itemService;
     @Mock
@@ -39,7 +41,7 @@ public class ItemServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        given(fileProperties.getUploadDir()).willReturn("../uploads/images/");
+        lenient().when(fileProperties.getUploadDir()).thenReturn("../uploads/images/");
     }
 
     @Test
@@ -103,6 +105,38 @@ public class ItemServiceImplTest {
     }
 
     @Test
+    void shouldFailWhenThumbNailIsNull() throws Exception{
+        ItemRegistrationRequest request = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(1000)
+                .category("상의")
+                .build();
+
+        MockMultipartFile thumbnail1 = null;
+        List<MultipartFile> detailImages1 = List.of(
+                new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", "img1".getBytes()),
+                new MockMultipartFile("detail2", "detail2.jpg", "image/jpeg", "img2".getBytes())
+        );
+
+        assertThatThrownBy(() -> itemService.addItem(request, thumbnail1, detailImages1))
+                .isInstanceOf(FileValidationException.class)
+                .hasMessage("{file.thumbnail.required}");
+
+        MockMultipartFile thumbnail2 = new MockMultipartFile(
+                "thumbnail",
+                "thumbnail.jpg",
+                "image/jpeg",
+                "dummy-thumbnail-content".getBytes()
+        );
+
+        given(itemRepository.save(any(Item.class)))
+                .willAnswer(invocation -> invocation.getArgument(0));
+        ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail2, detailImages1));
+
+        deleteFile(result);
+    }
+
+    @Test
     void findAllItemsWhenItemsExistThenReturnAllItemDtos() {
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
@@ -129,5 +163,12 @@ public class ItemServiceImplTest {
 
         assertEquals(result, expected);
         verify(itemRepository, times(1)).findAll();
+    }
+
+    private void deleteFile(ItemDto result) throws Exception{
+        Files.deleteIfExists(Path.of(result.getImage()));
+        for (String path : result.getInformation()) {
+            Files.deleteIfExists(Path.of(path));
+        }
     }
 }

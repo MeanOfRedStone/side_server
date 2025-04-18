@@ -1,5 +1,6 @@
 package com.server.side.item.service.impl;
 
+import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemDto;
@@ -24,6 +25,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto addItem(ItemRegistrationRequest request, MultipartFile thumbnail, List<MultipartFile> detailImages) {
+        validateImageFiles(thumbnail, detailImages);
+
         String thumbnailUrl = saveFile(thumbnail);
         List<String> detailImageUrls = new ArrayList<>();
         for(MultipartFile file : detailImages) {
@@ -35,6 +38,10 @@ public class ItemServiceImpl implements ItemService {
         item.setInformation(detailImageUrls);
 
         return fromEntity(repository.save(item));
+    }
+
+    private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
+        if(thumbnail == null || thumbnail.isEmpty()) throw new FileValidationException("{file.thumbnail.required}");
     }
 
     @Override
