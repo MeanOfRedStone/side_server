@@ -72,10 +72,7 @@ public class ItemServiceImplTest {
 
         verify(itemRepository, times(1)).save(any(Item.class));
 
-        Files.deleteIfExists(Path.of(result1.getImage()));
-        for (String path : result1.getInformation()) {
-            Files.deleteIfExists(Path.of(path));
-        }
+        deleteFile(result1);
 
         ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
                 .name("청바지")
@@ -88,10 +85,7 @@ public class ItemServiceImplTest {
 
         verify(itemRepository, times(2)).save(any(Item.class));
 
-        Files.deleteIfExists(Path.of(result2.getImage()));
-        for (String path : result2.getInformation()) {
-            Files.deleteIfExists(Path.of(path));
-        }
+        deleteFile(result2);
     }
 
     private void assertItem(ItemRegistrationRequest request, ItemDto result, MockMultipartFile thumbnail, List<MultipartFile> detailImages) {
