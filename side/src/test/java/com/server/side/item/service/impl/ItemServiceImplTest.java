@@ -42,7 +42,6 @@ public class ItemServiceImplTest {
         given(fileProperties.getUploadDir()).willReturn("../uploads/images/");
     }
 
-
     @Test
     void addItemThenReturnSame() throws Exception {
         String dir = fileProperties.getUploadDir();
@@ -67,13 +66,8 @@ public class ItemServiceImplTest {
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         ItemDto result1 = itemService.addItem(request1, thumbnail, detailImages);
-        assertEquals(request1.getName(), result1.getName());
-        assertEquals(request1.getPrice(), result1.getPrice());
-        assertEquals(request1.getCategory(), result1.getCategory());
-        assertEquals(dir + thumbnail.getOriginalFilename().toString(), result1.getImage());
-        for(int i = 0; i < detailImages.size(); i++) {
-            assertEquals(dir + detailImages.get(i).getOriginalFilename().toString(), result1.getInformation().get(i));
-        }
+        assertItem(request1, result1, thumbnail, detailImages);
+
         verify(itemRepository, times(1)).save(any(Item.class));
 
         Files.deleteIfExists(Path.of(result1.getImage()));
@@ -88,18 +82,23 @@ public class ItemServiceImplTest {
                 .build();
 
         ItemDto result2 = itemService.addItem(request2, thumbnail, detailImages);
-        assertEquals(request2.getName(), result2.getName());
-        assertEquals(request2.getPrice(), result2.getPrice());
-        assertEquals(request2.getCategory(), result2.getCategory());
-        assertEquals(dir + thumbnail.getOriginalFilename().toString(), result2.getImage());
-        for(int i = 0; i < detailImages.size(); i++) {
-            assertEquals(dir + detailImages.get(i).getOriginalFilename().toString(), result2.getInformation().get(i));
-        }
+        assertItem(request2, result2, thumbnail, detailImages);
+
         verify(itemRepository, times(2)).save(any(Item.class));
 
         Files.deleteIfExists(Path.of(result2.getImage()));
         for (String path : result2.getInformation()) {
             Files.deleteIfExists(Path.of(path));
+        }
+    }
+
+    private void assertItem(ItemRegistrationRequest request, ItemDto result, MockMultipartFile thumbnail, List<MultipartFile> detailImages) {
+        assertEquals(request.getName(), result.getName());
+        assertEquals(request.getPrice(), result.getPrice());
+        assertEquals(request.getCategory(), result.getCategory());
+        assertEquals(fileProperties.getUploadDir() + thumbnail.getOriginalFilename().toString(), result.getImage());
+        for(int i = 0; i < detailImages.size(); i++) {
+            assertEquals(fileProperties.getUploadDir() + detailImages.get(i).getOriginalFilename().toString(), result.getInformation().get(i));
         }
     }
 
