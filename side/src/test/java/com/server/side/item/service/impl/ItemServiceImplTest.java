@@ -118,6 +118,17 @@ public class ItemServiceImplTest {
         ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail2, detailImages1));
 
         deleteFile(result);
+
+        MockMultipartFile thumbnail3 = new MockMultipartFile(
+                "thumbnail",
+                "thumbnail.jpg",
+                "image/jpeg",
+                new byte[0]
+        );
+
+        assertThatThrownBy(() ->itemService.addItem(request, thumbnail3, detailImages1))
+                .isInstanceOf(FileValidationException.class)
+                .hasMessage("{file.thumbnail.required}");
     }
 
     @Test
