@@ -1,10 +1,12 @@
 package com.server.side.item.service.impl;
 
+import com.server.side.config.FileProperties;
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,14 +30,22 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceImplTest {
 
+    @Mock
+    private FileProperties fileProperties;
     @InjectMocks
     ItemServiceImpl itemService;
     @Mock
     ItemRepository itemRepository;
 
+    @BeforeEach
+    void setUp() {
+        given(fileProperties.getUploadDir()).willReturn("../uploads/images/");
+    }
+
+
     @Test
     void addItemThenReturnSame() throws Exception {
-        String dir = "../uploads/images/";
+        String dir = fileProperties.getUploadDir();
         MockMultipartFile thumbnail = new MockMultipartFile(
                 "thumbnail",
                 "thumbnail.jpg",
