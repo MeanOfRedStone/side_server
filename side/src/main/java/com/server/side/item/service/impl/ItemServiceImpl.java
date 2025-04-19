@@ -43,9 +43,7 @@ public class ItemServiceImpl implements ItemService {
     private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
         if(thumbnail == null || thumbnail.isEmpty()) throw new FileValidationException("{file.thumbnail.required}");
         if(detailImages == null) throw new FileValidationException("{file.detail.required}");
-//        for(MultipartFile detail : detailImages) {
-//            if(detail.isEmpty()) throw new FileValidationException("{file.detail.required}");
-//        }
+
         detailImages.stream()
                 .filter(MultipartFile::isEmpty)
                 .findFirst()
