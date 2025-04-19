@@ -17,7 +17,8 @@ public class FileManager {
             Files.copy(file.getInputStream(), path);
             return path.toString();
         } catch(IOException e) {
-            throw new FileStorageException("이미지 파일 저장 실패" + file.getOriginalFilename(), e);
+            throw new FileStorageException("{file.storage.failed}" + file.getOriginalFilename(), e);
+
         }
 
     }
