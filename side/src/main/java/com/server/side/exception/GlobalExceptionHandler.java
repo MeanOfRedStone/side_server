@@ -2,6 +2,8 @@ package com.server.side.exception;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,12 +16,24 @@ public class GlobalExceptionHandler {
     private final MessageSource messageSource;
 
     @ExceptionHandler(FileStorageException.class)
-    public String handleFileStorageException(FileStorageException ex, Locale locale) {
-        return messageSource.getMessage(ex.getMessage(), null, locale);
+    public ResponseEntity<ErrorResponse> handleFileStorageException(FileStorageException ex, Locale locale) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorCode("INTERNAL_SERVER_ERROR")
+                .message(messageSource.getMessage(ex.getMessage(), null, locale))
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(errorResponse);
     }
 
     @ExceptionHandler(FileValidationException.class)
-    public String handleFileValidationException(FileValidationException ex, Locale locale) {
-        return messageSource.getMessage(ex.getMessage(), null, locale);
+    public ResponseEntity<ErrorResponse> handleFileValidationException(FileValidationException ex, Locale locale) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .errorCode("FILE_VALIDATION_ERROR")
+                .message(messageSource.getMessage(ex.getMessage(), null, locale))
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
     }
 }
