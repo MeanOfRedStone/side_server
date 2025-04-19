@@ -89,7 +89,7 @@ public class ItemServiceImplTest {
     }
 
     @Test
-    void shouldFailWhenThumbNailIsNull() throws Exception{
+    void shouldFailWhenThumbNailIsBlank() throws Exception{
         ItemRegistrationRequest request = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(1000)
