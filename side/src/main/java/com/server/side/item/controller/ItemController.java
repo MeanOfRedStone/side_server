@@ -3,6 +3,7 @@ package com.server.side.item.controller;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.item.service.ItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class ItemController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ItemDto> createItem(
-            @RequestPart("request") ItemRegistrationRequest request,
+            @RequestPart("request") @Valid ItemRegistrationRequest request,
             @RequestPart("thumbnailImage") MultipartFile thumbnailImage,
             @RequestPart("detailImages") List<MultipartFile> detailImages
     ) {
