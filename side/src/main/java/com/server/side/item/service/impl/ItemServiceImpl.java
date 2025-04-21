@@ -6,7 +6,9 @@ import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.item.service.ItemService;
+import com.server.side.util.FileManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,28 +17,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.server.side.item.dto.ItemDto.fromEntity;
-import static com.server.side.util.FileManager.saveFile;
 
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository repository;
+    private final FileManager manager;
 
     @Override
     public ItemDto addItem(ItemRegistrationRequest request, MultipartFile thumbnail, List<MultipartFile> detailImages) {
         validateImageFiles(thumbnail, detailImages);
 
-        String thumbnailUrl = saveFile(thumbnail);
+        String thumbnailUrl = manager.saveFile(thumbnail);
         List<String> detailImageUrls = new ArrayList<>();
         for(MultipartFile file : detailImages) {
-            detailImageUrls.add(saveFile(file));
+            detailImageUrls.add(manager.saveFile(file));
         }
 
         Item item = request.toEntity();
         item.setImage(thumbnailUrl);
         item.setInformation(detailImageUrls);
-
         return fromEntity(repository.save(item));
     }
 
