@@ -48,6 +48,18 @@ public class ItemRegistrationRequestTest {
     }
 
     @Test
+    void shouldFailWhenPriceIsNull() {
+        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(null)
+                .category("상의").build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+
+        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("price")
+        && v.getMessage().equals("{item.price.notnull}"));
+    }
+    @Test
     void shouldFailWhenLessThanZero() {
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
