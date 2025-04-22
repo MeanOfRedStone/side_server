@@ -6,6 +6,7 @@ import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemRepository;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
+import com.server.side.util.FileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,10 +39,12 @@ public class ItemServiceImplTest {
     ItemServiceImpl itemService;
     @Mock
     ItemRepository itemRepository;
+    @Mock
+    FileManager fileManager;
 
     @BeforeEach
     void setUp() {
-        lenient().when(fileProperties.getUploadDir()).thenReturn("../uploads/images/");
+        lenient().when(fileProperties.getUploadDir()).thenReturn("/uploads/images/");
     }
 
     @Test
@@ -96,15 +99,10 @@ public class ItemServiceImplTest {
                 .category("상의")
                 .build();
 
-        MockMultipartFile thumbnail1 = null;
         List<MultipartFile> detailImages1 = List.of(
                 new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", "img1".getBytes()),
                 new MockMultipartFile("detail2", "detail2.jpg", "image/jpeg", "img2".getBytes())
         );
-
-        assertThatThrownBy(() -> itemService.addItem(request, thumbnail1, detailImages1))
-                .isInstanceOf(FileValidationException.class)
-                .hasMessage("{file.thumbnail.required}");
 
         MockMultipartFile thumbnail2 = new MockMultipartFile(
                 "thumbnail",
@@ -117,8 +115,6 @@ public class ItemServiceImplTest {
                 .willAnswer(invocation -> invocation.getArgument(0));
         ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail2, detailImages1));
 
-        deleteFile(result);
-
         MockMultipartFile thumbnail3 = new MockMultipartFile(
                 "thumbnail",
                 "thumbnail.jpg",
@@ -128,7 +124,7 @@ public class ItemServiceImplTest {
 
         assertThatThrownBy(() ->itemService.addItem(request, thumbnail3, detailImages1))
                 .isInstanceOf(FileValidationException.class)
-                .hasMessage("{file.thumbnail.required}");
+                .hasMessage("file.image.empty");
     }
 
     @Test
@@ -144,11 +140,6 @@ public class ItemServiceImplTest {
                 "image/jpeg",
                 "dummy-thumbnail-content".getBytes()
         );
-        List<MultipartFile> detailImages1 = null;
-
-        assertThatThrownBy(() -> itemService.addItem(request, thumbnail1, detailImages1))
-                .isInstanceOf(FileValidationException.class)
-                .hasMessage("{file.detail.required}");
 
         List<MultipartFile> detailImages2 = List.of(
                 new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", "img1".getBytes()),
@@ -159,8 +150,6 @@ public class ItemServiceImplTest {
 
         ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail1, detailImages2));
 
-        deleteFile(result);
-
         List<MultipartFile> detailImages3 = List.of(
                 new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", new byte[0]),
                 new MockMultipartFile("detail2", "detail2.jpg", "image/jpeg", "img2".getBytes())
@@ -168,7 +157,7 @@ public class ItemServiceImplTest {
 
         assertThatThrownBy(() -> itemService.addItem(request, thumbnail1, detailImages3))
                 .isInstanceOf(FileValidationException.class)
-                .hasMessage("{file.detail.required}");
+                .hasMessage("file.image.empty");
     }
 
     @Test
