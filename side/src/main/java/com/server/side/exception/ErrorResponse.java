@@ -4,17 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 public class ErrorResponse {
     private String errorCode;
     private String message;
-    private long timestamp;
+    private LocalDateTime timestamp;
 
     @Builder
     public ErrorResponse(String errorCode, String message) {
         this.errorCode = errorCode;
         this.message = message;
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = LocalDateTime.now();
     }
 }
