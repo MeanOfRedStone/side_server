@@ -8,7 +8,6 @@ import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.item.service.ItemService;
 import com.server.side.util.FileManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,14 +41,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
-        if(thumbnail == null || thumbnail.isEmpty()) throw new FileValidationException("{file.thumbnail.required}");
-        if(detailImages == null) throw new FileValidationException("{file.detail.required}");
+        if(thumbnail.isEmpty()) throw new FileValidationException("file.image.empty");
 
         detailImages.stream()
                 .filter(MultipartFile::isEmpty)
                 .findFirst()
                 .ifPresent(file -> {
-                    throw new FileValidationException("{file.detail.required}");
+                    throw new FileValidationException("file.image.empty");
                 });
     }
 
