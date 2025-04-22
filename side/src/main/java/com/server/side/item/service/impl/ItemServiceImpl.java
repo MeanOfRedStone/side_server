@@ -40,6 +40,13 @@ public class ItemServiceImpl implements ItemService {
         return fromEntity(repository.save(item));
     }
 
+    @Override
+    public List<ItemDto> findAllItems() {
+        return repository.findAll().stream()
+                .map(ItemDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
         if(thumbnail.isEmpty()) throw new FileValidationException("file.image.empty");
 
@@ -49,12 +56,5 @@ public class ItemServiceImpl implements ItemService {
                 .ifPresent(file -> {
                     throw new FileValidationException("file.image.empty");
                 });
-    }
-
-    @Override
-    public List<ItemDto> findAllItems() {
-        return repository.findAll().stream()
-                .map(ItemDto::fromEntity)
-                .collect(Collectors.toList());
     }
 }
