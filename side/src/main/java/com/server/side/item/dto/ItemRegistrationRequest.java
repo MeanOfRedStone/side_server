@@ -3,6 +3,7 @@ package com.server.side.item.dto;
 import com.server.side.item.domain.Item;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -16,8 +17,9 @@ public class ItemRegistrationRequest {
 
     @NotBlank(message = "{item.name.notblank}")
     private String name;
+    @NotNull(message = "{item.price.notnull}")
     @Min(value = 0, message = "{item.price.min}")
-    private int price;
+    private Integer price;
     @NotBlank(message = "{item.category.notblank}")
     private String category;
 
