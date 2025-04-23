@@ -190,4 +190,42 @@ public class ItemControllerTest {
         }
     }
 
+    @Test
+    void shouldReturnBadRequestWhenDetailImageAreMissing() throws Exception {
+        LocalDateTime fixedTimestamp = LocalDateTime.now();
+        try (MockedStatic<LocalDateTime> mockedDateTime = Mockito.mockStatic(LocalDateTime.class)) {
+            mockedDateTime.when(LocalDateTime::now).thenReturn(fixedTimestamp);
+
+            MockMultipartFile request = new MockMultipartFile(
+                    "request",
+                    "",
+                    "application/json",
+                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\"}".getBytes()
+            );
+
+            MockMultipartFile thumbnailImage = new MockMultipartFile(
+                    "thumbnailImage",
+                    "thumbnail.png",
+                    MediaType.IMAGE_PNG_VALUE,
+                    "thumbnail-image-content1".getBytes()
+            );
+
+            MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/items")
+                    .file(request)
+                    .file(thumbnailImage);
+
+            multipartRequest
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .accept(MediaType.APPLICATION_JSON);
+
+            mockMvc.perform(multipartRequest)
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.errorCode").value("REQUIRED_IMAGE_NOT_FOUND"))
+                    .andExpect(jsonPath("$.message").value(messageSource.getMessage("file.image.required", null, Locale.getDefault())))
+                    .andExpect(jsonPath("$.timestamp").value(fixedTimestamp.toString()));
+
+        }
+
+    }
+
 }
