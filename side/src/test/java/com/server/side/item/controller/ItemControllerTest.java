@@ -6,8 +6,11 @@ import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.item.service.impl.ItemServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -15,7 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -37,12 +42,14 @@ public class ItemControllerTest {
     @MockitoBean
     private ItemServiceImpl itemService;
 
+    @MockitoBean
+    private MessageSource messageSource;
+
     @Autowired
     private Gson gson;
 
     @Test
     void createItemThenReturnSameItem() throws Exception {
-
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(1000)
@@ -138,4 +145,49 @@ public class ItemControllerTest {
         actions.andExpect(status().isOk())
                 .andExpect(content().json(gson.toJson(expectedList)));
     }
+
+    @Test
+    void shouldReturnBadRequestWhenThumbnailImageIsMissing() throws Exception {
+        LocalDateTime fixedTimestamp = LocalDateTime.now();
+        try (MockedStatic<LocalDateTime> mockedDateTime = Mockito.mockStatic(LocalDateTime.class)) {
+            mockedDateTime.when(LocalDateTime::now).thenReturn(fixedTimestamp);
+
+            MockMultipartFile request = new MockMultipartFile(
+                    "request",
+                    "",
+                    "application/json",
+                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\"}".getBytes()
+            );
+
+            MockMultipartFile detailImage1 = new MockMultipartFile(
+                    "detailImage",
+                    "detail.png",
+                    MediaType.IMAGE_PNG_VALUE,
+                    "detail-image-content1".getBytes()
+            );
+            MockMultipartFile detailImage2 = new MockMultipartFile(
+                    "detailImage",
+                    "detail2.png",
+                    MediaType.IMAGE_PNG_VALUE,
+                    "detail-image-content2".getBytes()
+            );
+
+            MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/items")
+                    .file(request)
+                    .file(detailImage1)
+                    .file(detailImage2);
+
+            multipartRequest
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .accept(MediaType.APPLICATION_JSON);
+
+            mockMvc.perform(multipartRequest)
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.errorCode").value("REQUIRED_IMAGE_NOT_FOUND"))
+                    .andExpect(jsonPath("$.message").value(messageSource.getMessage("file.image.required", null, Locale.getDefault())))
+                    .andExpect(jsonPath("$.timestamp").value(fixedTimestamp.toString()));
+
+        }
+    }
+
 }
