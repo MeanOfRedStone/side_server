@@ -113,7 +113,7 @@ public class ItemServiceImplTest {
 
         given(itemRepository.save(any(Item.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
-        ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail2, detailImages1));
+        assertDoesNotThrow(() -> itemService.addItem(request, thumbnail2, detailImages1));
 
         MockMultipartFile thumbnail3 = new MockMultipartFile(
                 "thumbnail",
@@ -148,7 +148,7 @@ public class ItemServiceImplTest {
         given(itemRepository.save(any(Item.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
-        ItemDto result = assertDoesNotThrow(() -> itemService.addItem(request, thumbnail1, detailImages2));
+        assertDoesNotThrow(() -> itemService.addItem(request, thumbnail1, detailImages2));
 
         List<MultipartFile> detailImages3 = List.of(
                 new MockMultipartFile("detail1", "detail1.jpg", "image/jpeg", new byte[0]),
