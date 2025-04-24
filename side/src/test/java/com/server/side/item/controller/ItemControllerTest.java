@@ -156,11 +156,19 @@ public class ItemControllerTest {
         try (MockedStatic<LocalDateTime> mockedDateTime = Mockito.mockStatic(LocalDateTime.class)) {
             mockedDateTime.when(LocalDateTime::now).thenReturn(fixedTimestamp);
 
-            MockMultipartFile request = new MockMultipartFile(
-                    "request",
-                    "",
+            ItemRegistrationRequest request = ItemRegistrationRequest.builder()
+                    .name("셔츠")
+                    .price(1000)
+                    .category("상의")
+                    .description("멋진 셔츠")
+                    .build();
+            String requestJson = gson.toJson(request);
+
+            MockMultipartFile requestPart = new MockMultipartFile(
+                    "request",         // @RequestPart 이름
+                    "",                // 파일 이름 필요 없음
                     "application/json",
-                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\", \"description\" : \"멋진 셔츠\"}".getBytes()
+                    requestJson.getBytes()
             );
 
             MockMultipartFile detailImage1 = new MockMultipartFile(
@@ -177,7 +185,7 @@ public class ItemControllerTest {
             );
 
             MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/items")
-                    .file(request)
+                    .file(requestPart)
                     .file(detailImage1)
                     .file(detailImage2);
 
@@ -200,11 +208,19 @@ public class ItemControllerTest {
         try (MockedStatic<LocalDateTime> mockedDateTime = Mockito.mockStatic(LocalDateTime.class)) {
             mockedDateTime.when(LocalDateTime::now).thenReturn(fixedTimestamp);
 
-            MockMultipartFile request = new MockMultipartFile(
-                    "request",
-                    "",
+            ItemRegistrationRequest request = ItemRegistrationRequest.builder()
+                    .name("셔츠")
+                    .price(1000)
+                    .category("상의")
+                    .description("멋진 셔츠")
+                    .build();
+            String requestJson = gson.toJson(request);
+
+            MockMultipartFile requestPart = new MockMultipartFile(
+                    "request",         // @RequestPart 이름
+                    "",                // 파일 이름 필요 없음
                     "application/json",
-                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\", \"description\" : \"멋진 셔츠\"}".getBytes()
+                    requestJson.getBytes()
             );
 
             MockMultipartFile thumbnailImage = new MockMultipartFile(
@@ -215,7 +231,7 @@ public class ItemControllerTest {
             );
 
             MockMultipartHttpServletRequestBuilder multipartRequest = multipart("/items")
-                    .file(request)
+                    .file(requestPart)
                     .file(thumbnailImage);
 
             multipartRequest
