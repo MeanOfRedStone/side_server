@@ -23,6 +23,8 @@ public class ItemRegistrationRequest {
     @NotBlank(message = "{item.category.notblank}")
     private String category;
 
+    private String description;
+
     private String image;
 
     private List<String> information;
@@ -42,6 +44,7 @@ public class ItemRegistrationRequest {
                 .name(this.name)
                 .price(this.price)
                 .category(this.category)
+                .description(this.description)
                 .image(this.image)
                 .information(this.information)
                 .build();

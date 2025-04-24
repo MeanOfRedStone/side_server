@@ -20,6 +20,8 @@ public class ItemDto {
 
     private String category;
 
+    private String description;
+
     private String image;
 
     private List<String> information;
@@ -30,6 +32,7 @@ public class ItemDto {
                 .name(item.getName())
                 .price(item.getPrice())
                 .category(item.getCategory())
+                .description(item.getDescription())
                 .image(item.getImage())
                 .information(item.getInformation())
                 .build();

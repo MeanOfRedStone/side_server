@@ -27,6 +27,8 @@ public class Item {
 
     private String category;
 
+    private String description;
+
     private String image;
 
     private List<String> information;
@@ -38,12 +40,13 @@ public class Item {
     private Instant modifiedDate;
 
     @Builder
-    public Item(long id, String name, int price, String category,
+    public Item(long id, String name, int price, String category, String description,
                 String image, List<String> information) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.category  = category;
+        this.description = description;
         this.image = image;
         this.information = information;
     }
