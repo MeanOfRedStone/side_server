@@ -22,7 +22,7 @@ public class ItemRegistrationRequest {
     private Integer price;
     @NotBlank(message = "{item.category.notblank}")
     private String category;
-
+    @NotBlank(message = "{item.description.notblank}")
     private String description;
 
     private String image;
