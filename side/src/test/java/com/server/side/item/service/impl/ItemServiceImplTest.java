@@ -65,8 +65,13 @@ public class ItemServiceImplTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .build();
 
+        given(fileManager.saveFile(thumbnail)).willReturn(dir + thumbnail.getOriginalFilename());
+        for(MultipartFile file : detailImages) {
+            given(fileManager.saveFile(file)).willReturn(dir + file.getOriginalFilename());
+        }
         given(itemRepository.save(any(Item.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
@@ -81,6 +86,7 @@ public class ItemServiceImplTest {
                 .name("청바지")
                 .price(2000)
                 .category("하의")
+                .description("멋진 바지")
                 .build();
 
         ItemDto result2 = itemService.addItem(request2, thumbnail, detailImages);
@@ -97,6 +103,7 @@ public class ItemServiceImplTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .build();
 
         List<MultipartFile> detailImages1 = List.of(
@@ -133,6 +140,7 @@ public class ItemServiceImplTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .build();
         MockMultipartFile thumbnail1 = new MockMultipartFile(
                 "thumbnail",
@@ -166,6 +174,7 @@ public class ItemServiceImplTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .image("셔츠.png")
                 .information(List.of("img1", "img2"))
                 .build();
@@ -174,6 +183,7 @@ public class ItemServiceImplTest {
                 .name("청바지")
                 .price(2000)
                 .category("하의")
+                .description("멋진 바지")
                 .image("청바지.png")
                 .information(List.of("img1", "img2"))
                 .build();
@@ -193,7 +203,7 @@ public class ItemServiceImplTest {
         assertEquals(request.getName(), result.getName());
         assertEquals(request.getPrice(), result.getPrice());
         assertEquals(request.getCategory(), result.getCategory());
-        assertEquals(fileProperties.getUploadDir() + thumbnail.getOriginalFilename().toString(), result.getImage());
+        assertEquals(fileProperties.getUploadDir() + thumbnail.getOriginalFilename(), result.getImage());
         for(int i = 0; i < detailImages.size(); i++) {
             assertEquals(fileProperties.getUploadDir() + detailImages.get(i).getOriginalFilename().toString(), result.getInformation().get(i));
         }
