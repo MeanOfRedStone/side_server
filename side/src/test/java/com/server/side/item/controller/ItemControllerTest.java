@@ -54,6 +54,7 @@ public class ItemControllerTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .build();
         String requestJson = gson.toJson(request1);
 
@@ -111,6 +112,7 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.name").value(result1.getName()))
                 .andExpect(jsonPath("$.price").value(result1.getPrice()))
                 .andExpect(jsonPath("$.category").value(result1.getCategory()))
+                .andExpect(jsonPath("$.description").value(result1.getDescription()))
                 .andExpect(jsonPath("$.image").value(result1.getImage()))
                 .andExpect(jsonPath("$.information", containsInAnyOrder(result1.getInformation().toArray(new String[0]))));
 
@@ -122,6 +124,7 @@ public class ItemControllerTest {
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
+                .description("멋진 셔츠")
                 .image("셔츠.png")
                 .information(List.of("img1", "img2"))
                 .build();
@@ -130,6 +133,7 @@ public class ItemControllerTest {
                 .name("청바지")
                 .price(2000)
                 .category("하의")
+                .description("멋진 바지")
                 .image("청바지.png")
                 .information(List.of("img1", "img2"))
                 .build();
@@ -156,7 +160,7 @@ public class ItemControllerTest {
                     "request",
                     "",
                     "application/json",
-                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\"}".getBytes()
+                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\", \"description\" : \"멋진 셔츠\"}".getBytes()
             );
 
             MockMultipartFile detailImage1 = new MockMultipartFile(
@@ -200,7 +204,7 @@ public class ItemControllerTest {
                     "request",
                     "",
                     "application/json",
-                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\"}".getBytes()
+                    "{\"name\":\"Test Item\", \"price\":1000, \"category\":\"상의\", \"description\" : \"멋진 셔츠\"}".getBytes()
             );
 
             MockMultipartFile thumbnailImage = new MockMultipartFile(
