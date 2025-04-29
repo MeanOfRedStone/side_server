@@ -3,6 +3,7 @@ package com.server.side.item.dto;
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -15,7 +16,7 @@ public class ItemDetailRegistrationRequest {
     private Item item;
     @NotBlank(message = "{itemDetail.option.notblank}")
     private String option;
-
+    @NotNull(message = "{itemDetail.quantity.notnull}")
     private Integer quantity;
 
     public ItemDetail toEntity() {
