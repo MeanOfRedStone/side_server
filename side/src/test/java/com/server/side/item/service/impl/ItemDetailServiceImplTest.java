@@ -1,10 +1,9 @@
-package com.server.side.itemDetail.impl;
+package com.server.side.item.service.impl;
 
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
 import com.server.side.item.repository.ItemDetailRepository;
 import com.server.side.item.dto.ItemDetailRegistrationRequest;
-import com.server.side.item.service.impl.ItemDetailServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-public class ItemDetailServiceTest {
+public class ItemDetailServiceImplTest {
 
     @InjectMocks
     ItemDetailServiceImpl itemDetailService;

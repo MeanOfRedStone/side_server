@@ -1,9 +1,8 @@
-package com.server.side.itemDetail.controller;
+package com.server.side.item.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.server.side.config.InstantTypeAdapter;
-import com.server.side.item.controller.ItemDetailController;
 import com.server.side.item.domain.Item;
 import com.server.side.item.dto.ItemDetailDTO;
 import com.server.side.item.dto.ItemDetailRegistrationRequest;
