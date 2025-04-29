@@ -17,7 +17,7 @@ public class ItemDetailController {
 
     @PostMapping
     public ResponseEntity<ItemDetailDTO> createItemDetail(
-            @PathVariable Long itemId,
+            @PathVariable("itemId") Long itemId,
             @RequestBody ItemDetailRegistrationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.addItemDetail(request));
     }
