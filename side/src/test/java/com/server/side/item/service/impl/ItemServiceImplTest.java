@@ -3,7 +3,7 @@ package com.server.side.item.service.impl;
 import com.server.side.config.FileProperties;
 import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemRepository;
+import com.server.side.item.repository.ItemRepository;
 import com.server.side.item.dto.ItemDto;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.util.FileManager;

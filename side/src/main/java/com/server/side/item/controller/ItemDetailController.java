@@ -1,8 +1,8 @@
-package com.server.side.itemDetail.controller;
+package com.server.side.item.controller;
 
-import com.server.side.itemDetail.dto.ItemDetailDTO;
-import com.server.side.itemDetail.dto.ItemDetailRegistrationRequest;
-import com.server.side.itemDetail.service.ItemDetailService;
+import com.server.side.item.dto.ItemDetailDTO;
+import com.server.side.item.dto.ItemDetailRegistrationRequest;
+import com.server.side.item.service.ItemDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

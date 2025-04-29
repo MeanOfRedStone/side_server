@@ -1,7 +1,7 @@
-package com.server.side.itemDetail.dto;
+package com.server.side.item.dto;
 
 import com.server.side.item.domain.Item;
-import com.server.side.itemDetail.domain.ItemDetail;
+import com.server.side.item.domain.ItemDetail;
 import lombok.*;
 
 @Getter
