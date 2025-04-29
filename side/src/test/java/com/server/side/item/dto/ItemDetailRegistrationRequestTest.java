@@ -76,4 +76,25 @@ public class ItemDetailRegistrationRequestTest {
         assertThat(violations1).anyMatch(v->v.getPropertyPath().toString().equals("quantity")
                 && v.getMessage().equals("{itemDetail.quantity.notnull}"));
     }
+
+    @Test
+    void shouldFailWhenQuantityLessThanZero() {
+        Item item = Item.builder()
+                .id(1L)
+                .name("셔츠")
+                .price(1000)
+                .category("상의")
+                .image("셔츠.png")
+                .information(List.of("img1", "img2"))
+                .build();
+        ItemDetailRegistrationRequest request1 = ItemDetailRegistrationRequest.builder()
+                .item(item)
+                .option("L")
+                .quantity(-1).build();
+
+        Set<ConstraintViolation<ItemDetailRegistrationRequest>> violations1 = validator.validate(request1);
+
+        assertThat(violations1).anyMatch(v->v.getPropertyPath().toString().equals("quantity")
+                && v.getMessage().equals("{itemDetail.quantity.min}"));
+    }
 }
