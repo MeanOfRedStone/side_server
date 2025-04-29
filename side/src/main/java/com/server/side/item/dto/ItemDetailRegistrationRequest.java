@@ -2,6 +2,7 @@ package com.server.side.item.dto;
 
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -12,7 +13,7 @@ import lombok.*;
 public class ItemDetailRegistrationRequest {
 
     private Item item;
-
+    @NotBlank(message = "{itemDetail.option.notblank}")
     private String option;
 
     private int quantity;
