@@ -64,7 +64,7 @@ public class ItemRegistrationRequestTest {
         && v.getMessage().equals("{item.price.notnull}"));
     }
     @Test
-    void shouldFailWhenLessThanZero() {
+    void shouldFailWhenPriceLessThanZero() {
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(-1)
