@@ -16,7 +16,7 @@ public class ItemDetailRegistrationRequest {
     @NotBlank(message = "{itemDetail.option.notblank}")
     private String option;
 
-    private int quantity;
+    private Integer quantity;
 
     public ItemDetail toEntity() {
         return ItemDetail.builder()
