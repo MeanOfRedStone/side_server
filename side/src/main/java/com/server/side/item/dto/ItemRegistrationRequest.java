@@ -28,6 +28,8 @@ public class ItemRegistrationRequest {
     private String image;
 
     private List<String> information;
+    @NotNull(message = "{item.itemDetails.notnull}")
+    private List<ItemDetailRegistrationRequest> itemDetails;
 
     public Item toEntity() {
         return Item.builder()
