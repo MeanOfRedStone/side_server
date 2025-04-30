@@ -154,4 +154,20 @@ public class ItemRegistrationRequestTest {
         assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("description")
                 && v.getMessage().equals("{item.description.notblank}"));
     }
+
+    @Test
+    void shouldFailWhenItemDetailsAreNull() {
+        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(0)
+                .category("상의")
+                .description("멋진 셔츠")
+                .itemDetails(null)
+                .build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+
+        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("itemDetails")
+        && v.getMessage().equals("{item.itemDetails.notnull}"));
+    }
 }
