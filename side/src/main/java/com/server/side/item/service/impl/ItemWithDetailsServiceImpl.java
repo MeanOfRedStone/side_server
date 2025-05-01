@@ -2,10 +2,12 @@ package com.server.side.item.service.impl;
 
 import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
+import com.server.side.item.domain.ItemDetail;
+import com.server.side.item.repository.ItemDetailRepository;
 import com.server.side.item.repository.ItemRepository;
-import com.server.side.item.dto.ItemDto;
-import com.server.side.item.dto.ItemRegistrationRequest;
-import com.server.side.item.service.ItemService;
+import com.server.side.item.dto.ItemWithDetailsDTO;
+import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.item.service.ItemWithDetailsService;
 import com.server.side.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,19 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.server.side.item.dto.ItemDto.fromEntity;
 
 @Service
 @RequiredArgsConstructor
-public class ItemServiceImpl implements ItemService {
+public class ItemWithDetailsServiceImpl implements ItemWithDetailsService {
 
-    private final ItemRepository repository;
+    private final ItemRepository itemRepository;
+    private final ItemDetailRepository itemDetailRepository;
     private final FileManager manager;
 
     @Override
-    public ItemDto addItem(ItemRegistrationRequest request, MultipartFile thumbnail, List<MultipartFile> detailImages) {
+    public ItemWithDetailsDTO addItemWithDetails(ItemWithDetailsRegistrationRequest request, MultipartFile thumbnail, List<MultipartFile> detailImages) {
         validateImageFiles(thumbnail, detailImages);
 
         String thumbnailUrl = manager.saveFile(thumbnail);
@@ -34,17 +34,21 @@ public class ItemServiceImpl implements ItemService {
             detailImageUrls.add(manager.saveFile(file));
         }
 
-        Item item = request.toEntity();
+        Item item = request.toItemEntity();
         item.setImage(thumbnailUrl);
         item.setInformation(detailImageUrls);
-        return fromEntity(repository.save(item));
+        Item resultItem = itemRepository.save(item);
+        List<ItemDetail> resultItemDetails = itemDetailRepository.saveAll(request.toItemDetailEntity());
+
+        return ItemWithDetailsDTO.fromEntities(resultItem, resultItemDetails);
     }
 
     @Override
-    public List<ItemDto> findAllItems() {
-        return repository.findAll().stream()
-                .map(ItemDto::fromEntity)
-                .collect(Collectors.toList());
+    public List<ItemWithDetailsDTO> findAllItems() {
+//        return repository.findAll().stream()
+//                .map(ItemWithDetailsDTO::fromEntities)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
