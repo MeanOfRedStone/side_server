@@ -9,42 +9,42 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ItemRegistrationRequestTest {
+public class ItemWithDetailsRegistrationRequestTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     void shouldFailWhenNameIsBlank() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name(null)
                 .price(1000)
                 .category("상의")
                 .description("멋진 셔츠").build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("name")
                 && v.getMessage().equals("{item.name.notblank}"));
 
 
-        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
                 .name("")
                 .price(1000)
                 .category("상의")
                 .description("멋진 셔츠").build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations2 = validator.validate(request2);
 
         assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("name")
                 && v.getMessage().equals("{item.name.notblank}"));
 
-        ItemRegistrationRequest request3 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request3 = ItemWithDetailsRegistrationRequest.builder()
                 .name(" ")
                 .price(1000)
                 .category("상의")
                 .description("멋진 셔츠").build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations3 = validator.validate(request3);
 
         assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("name")
                 && v.getMessage().equals("{item.name.notblank}"));
@@ -52,26 +52,26 @@ public class ItemRegistrationRequestTest {
 
     @Test
     void shouldFailWhenPriceIsNull() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(null)
                 .category("상의")
                 .description("멋진 셔츠").build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("price")
         && v.getMessage().equals("{item.price.notnull}"));
     }
     @Test
     void shouldFailWhenPriceLessThanZero() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(-1)
                 .category("상의")
                 .description("멋진 셔츠").build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("price")
         && v.getMessage().equals("{item.price.min}"));
@@ -79,38 +79,38 @@ public class ItemRegistrationRequestTest {
 
     @Test
     void shouldFailWhenCategoryIsBlank() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category(null)
                 .description("멋진 셔츠")
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("category")
                 && v.getMessage().equals("{item.category.notblank}"));
 
-        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("")
                 .description("멋진 셔츠")
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations2 = validator.validate(request2);
 
         assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("category")
                 && v.getMessage().equals("{item.category.notblank}"));
 
-        ItemRegistrationRequest request3 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request3 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category(" ")
                 .description("멋진 셔츠")
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations3 = validator.validate(request3);
 
         assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("category")
                 && v.getMessage().equals("{item.category.notblank}"));
@@ -118,38 +118,38 @@ public class ItemRegistrationRequestTest {
 
     @Test
     void shouldFailWhenDescriptionIsBlank() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description(null)
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("description")
         && v.getMessage().equals("{item.description.notblank}"));
 
-        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description("")
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations2 = validator.validate(request2);
 
         assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("description")
                 && v.getMessage().equals("{item.description.notblank}"));
 
-        ItemRegistrationRequest request3 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request3 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description(" ")
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations3 = validator.validate(request3);
 
         assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("description")
                 && v.getMessage().equals("{item.description.notblank}"));
@@ -157,7 +157,7 @@ public class ItemRegistrationRequestTest {
 
     @Test
     void shouldFailWhenItemDetailsAreNull() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
@@ -165,7 +165,7 @@ public class ItemRegistrationRequestTest {
                 .itemDetails(null)
                 .build();
 
-        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+        Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("itemDetails")
         && v.getMessage().equals("{item.itemDetails.notnull}"));
