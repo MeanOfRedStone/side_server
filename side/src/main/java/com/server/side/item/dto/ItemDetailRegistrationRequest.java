@@ -1,6 +1,5 @@
 package com.server.side.item.dto;
 
-import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -8,13 +7,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
 public class ItemDetailRegistrationRequest {
 
-    private Item item;
+    private Long id;
+
+    private ItemRegistrationRequest item;
     @NotBlank(message = "{itemDetail.option.notblank}")
     private String option;
     @NotNull(message = "{itemDetail.quantity.notnull}")
@@ -23,7 +25,7 @@ public class ItemDetailRegistrationRequest {
 
     public ItemDetail toEntity() {
         return ItemDetail.builder()
-                .item(this.item)
+                .item(this.item.toEntity())
                 .option(this.option)
                 .quantity(this.quantity)
                 .build();
@@ -31,7 +33,7 @@ public class ItemDetailRegistrationRequest {
 
     public ItemDetailDTO toResponse() {
         return ItemDetailDTO.builder()
-                .item(this.item)
+                .item(ItemDTO.fromEntity(this.item.toEntity()))
                 .option(this.option)
                 .quantity(this.quantity)
                 .build();

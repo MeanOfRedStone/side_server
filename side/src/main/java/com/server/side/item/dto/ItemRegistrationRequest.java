@@ -15,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class ItemRegistrationRequest {
 
+    private Long id;
     @NotBlank(message = "{item.name.notblank}")
     private String name;
     @NotNull(message = "{item.price.notnull}")
@@ -28,22 +29,9 @@ public class ItemRegistrationRequest {
     private String image;
 
     private List<String> information;
-    @NotNull(message = "{item.itemDetails.notnull}")
-    private List<ItemDetailRegistrationRequest> itemDetails;
 
     public Item toEntity() {
         return Item.builder()
-                .name(this.name)
-                .price(this.price)
-                .category(this.category)
-                .description(this.description)
-                .image(this.image)
-                .information(this.information)
-                .build();
-    }
-
-    public ItemDto toResponse() {
-        return ItemDto.builder()
                 .name(this.name)
                 .price(this.price)
                 .category(this.category)

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 public class ItemWithDetailsRegistrationRequest {
 
+    private Long id;
     @NotBlank(message = "{item.name.notblank}")
     private String name;
     @NotNull(message = "{item.price.notnull}")
@@ -53,5 +54,4 @@ public class ItemWithDetailsRegistrationRequest {
                         .build())
                 .collect(Collectors.toList());
     }
-
 }
