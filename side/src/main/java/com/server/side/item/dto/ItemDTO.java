@@ -1,0 +1,53 @@
+package com.server.side.item.dto;
+
+import com.server.side.item.domain.Item;
+import lombok.*;
+
+import java.util.List;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode
+public class ItemDTO {
+
+    private long id;
+
+    private String name;
+
+    private int price;
+
+    private String category;
+
+    private String description;
+
+    private String image;
+
+    private List<String> information;
+
+    public static ItemWithDetailsDTO fromEntities(Item item) {
+        return ItemWithDetailsDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .price(item.getPrice())
+                .category(item.getCategory())
+                .description(item.getDescription())
+                .image(item.getImage())
+                .information(item.getInformation())
+                .build();
+    }
+
+    public static ItemDTO fromEntity(Item item) {
+        return ItemDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .price(item.getPrice())
+                .category(item.getCategory())
+                .description(item.getDescription())
+                .image(item.getImage())
+                .information(item.getInformation())
+                .build();
+    }
+
+}
