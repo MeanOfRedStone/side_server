@@ -2,6 +2,7 @@ package com.server.side.item.repository;
 
 import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
+import com.server.side.item.dto.ItemDTO;
 import com.server.side.item.dto.ItemDetailRegistrationRequest;
 import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -46,7 +47,7 @@ public class ItemDetailRepositoryTest {
 
         List<ItemDetail> details1 = detailsRegistrationRequest1.stream()
                         .map(itemDetailRegistrationRequest -> {
-                                itemDetailRegistrationRequest.setItem(item1);
+                                itemDetailRegistrationRequest.setItem(ItemDTO.fromEntity(item1));
                                 return itemDetailRegistrationRequest.toEntity();
                         })
                                 .collect(Collectors.toList());

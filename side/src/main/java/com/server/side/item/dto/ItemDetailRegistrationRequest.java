@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import static com.server.side.item.dto.ItemDTO.fromEntity;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +18,7 @@ public class ItemDetailRegistrationRequest {
 
     private Long id;
 
-    private ItemRegistrationRequest item;
+    private ItemDTO item;
     @NotBlank(message = "{itemDetail.option.notblank}")
     private String option;
     @NotNull(message = "{itemDetail.quantity.notnull}")
@@ -35,7 +37,7 @@ public class ItemDetailRegistrationRequest {
     public ItemDetailDTO toResponse() {
         return ItemDetailDTO.builder()
                 .id(this.id)
-                .item(ItemDTO.fromEntity(this.item.toEntity()))
+                .item(fromEntity(this.item.toEntity()))
                 .option(this.option)
                 .quantity(this.quantity)
                 .build();
