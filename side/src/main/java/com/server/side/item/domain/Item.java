@@ -19,11 +19,11 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String name;
 
-    private int price;
+    private Integer price;
 
     private String category;
 
@@ -40,7 +40,7 @@ public class Item {
     private Instant modifiedDate;
 
     @Builder
-    public Item(long id, String name, int price, String category, String description,
+    public Item(Long id, String name, Integer price, String category, String description,
                 String image, List<String> information) {
         this.id = id;
         this.name = name;

@@ -18,7 +18,7 @@ public class ItemDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
@@ -26,7 +26,7 @@ public class ItemDetail {
 
     private String option;
 
-    private int quantity;
+    private Integer quantity;
 
     @CreatedDate
     private Instant createdDate;
@@ -35,7 +35,7 @@ public class ItemDetail {
     private Instant modifiedDate;
 
     @Builder
-    public ItemDetail(long id, Item item, String option, int quantity) {
+    public ItemDetail(Long id, Item item, String option, Integer quantity) {
         this.id = id;
         this.item = item;
         this.option = option;
