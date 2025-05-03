@@ -10,5 +10,5 @@ public interface ItemWithDetailsService {
 
     ItemWithDetailsDTO addItemWithDetails(ItemWithDetailsRegistrationRequest request, MultipartFile thumbnail, List<MultipartFile> detailImages);
 
-    List<ItemWithDetailsDTO> findAllItems();
+    List<ItemWithDetailsDTO> findAllItemsWithDetails();
 }

@@ -24,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.server.side.item.dto.ItemDTO.fromEntity;
+import static com.server.side.item.dto.ItemWithDetailsDTO.fromEntities;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -210,43 +212,66 @@ public class ItemWithDetailsServiceImplTest {
                 .hasMessage("file.image.empty");
     }
 
-//    @Test
-//    void findAllItemsWhenItemsExistThenReturnAllItemDtos() {
-//        ItemDetailRegistrationRequest detailRequest = ItemDetailRegistrationRequest.builder()
-//                .option("L")
-//                .quantity(100)
-//                .build();
-//        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
-//                .name("셔츠")
-//                .price(1000)
-//                .category("상의")
-//                .description("멋진 셔츠")
-//                .image("셔츠.png")
-//                .information(List.of("img1", "img2"))
-//                .itemDetails(List.of(detailRequest))
-//                .build();
-//
-//        ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
-//                .name("청바지")
-//                .price(2000)
-//                .category("하의")
-//                .description("멋진 바지")
-//                .image("청바지.png")
-//                .information(List.of("img1", "img2"))
-//                .itemDetails(List.of(detailRequest))
-//                .build();
-//
-//        List<Item> mockItemList = List.of(request1.toItemEntity(), request2.toItemEntity());
-//        given(itemRepository.findAll()).willReturn(mockItemList);
-//        List<ItemDetail> mockItemDetailList
-//
-//        List<ItemWithDetailsDTO> result = itemService.findAllItems();
-//
-//        List<ItemWithDetailsDTO> expected = List.of(fromEntities(request1.toItemEntity()), fromEntities(request2.toItemEntity()));
-//
-//        assertEquals(result, expected);
-//        verify(itemRepository, times(1)).findAll();
-//    }
+    @Test
+    void findAllItemsWhenItemsExistThenReturnAllItemDtos() {
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
+        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
+                .id(1L)
+                .name("셔츠")
+                .price(1000)
+                .category("상의")
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("img1", "img2"))
+                .itemDetails(List.of(detailRequest1))
+                .build();
+        detailRequest1.setItem(fromEntity(request1.toItemEntity()));
+
+        ItemDetailRegistrationRequest detailRequest2 = ItemDetailRegistrationRequest.builder()
+                .id(2L)
+                .option("L")
+                .quantity(100)
+                .build();
+        ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
+                .id(2L)
+                .name("청바지")
+                .price(2000)
+                .category("하의")
+                .description("멋진 바지")
+                .image("청바지.png")
+                .information(List.of("img1", "img2"))
+                .itemDetails(List.of(detailRequest2))
+                .build();
+        detailRequest2.setItem(fromEntity(request2.toItemEntity()));
+
+        List<Item> items = List.of(request1.toItemEntity(), request2.toItemEntity());
+        List<ItemDetail> details1 = List.of(detailRequest1.toEntity());
+        List<ItemDetail> details2 = List.of(detailRequest2.toEntity());
+        given(itemRepository.findAll()).willReturn(items);
+        items.forEach(item -> {
+            if (item.getId() == 1L) {
+                given(itemDetailRepository.findAllByItemId(item.getId()))
+                        .willReturn(details1);
+            }
+        });
+        items.forEach(item -> {
+            if (item.getId() == 2L) {
+                given(itemDetailRepository.findAllByItemId(item.getId()))
+                        .willReturn(details2);
+            }
+        });
+
+        List<ItemWithDetailsDTO> result = itemService.findAllItemsWithDetails();
+        List<ItemWithDetailsDTO> expected = List.of(fromEntities(request1.toItemEntity(), request1.toItemDetailEntity()), fromEntities(request2.toItemEntity(), request2.toItemDetailEntity()));
+        assertEquals(result, expected);
+        verify(itemRepository, times(1)).findAll();
+        verify(itemDetailRepository, times(1)).findAllByItemId(request1.getId());
+        verify(itemDetailRepository, times(1)).findAllByItemId(request2.getId());
+    }
 
     private void assertItemWithDetails(ItemWithDetailsRegistrationRequest request, ItemWithDetailsDTO result, MockMultipartFile thumbnail, List<MultipartFile> detailImages) {
         assertEquals(request.getName(), result.getName());

@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.server.side.item.dto.ItemWithDetailsDTO.fromEntities;
 
 @Service
 @RequiredArgsConstructor
@@ -40,15 +43,17 @@ public class ItemWithDetailsServiceImpl implements ItemWithDetailsService {
         Item resultItem = itemRepository.save(item);
         List<ItemDetail> resultItemDetails = itemDetailRepository.saveAll(request.toItemDetailEntity());
 
-        return ItemWithDetailsDTO.fromEntities(resultItem, resultItemDetails);
+        return fromEntities(resultItem, resultItemDetails);
     }
 
     @Override
-    public List<ItemWithDetailsDTO> findAllItems() {
-//        return repository.findAll().stream()
-//                .map(ItemWithDetailsDTO::fromEntities)
-//                .collect(Collectors.toList());
-        return null;
+    public List<ItemWithDetailsDTO> findAllItemsWithDetails() {
+        return itemRepository.findAll().stream()
+                .map(item -> {
+                    List<ItemDetail> details = itemDetailRepository.findAllByItemId(item.getId());
+                    return fromEntities(item, details);
+                })
+                .collect(Collectors.toList());
     }
 
     private void validateImageFiles(MultipartFile thumbnail, List<MultipartFile> detailImages) {
