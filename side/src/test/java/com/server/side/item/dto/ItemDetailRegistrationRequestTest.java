@@ -1,6 +1,5 @@
 package com.server.side.item.dto;
 
-import com.server.side.item.domain.Item;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -17,7 +16,7 @@ public class ItemDetailRegistrationRequestTest {
 
     @Test
     void shouldFailWhenOptionIsBlank() {
-        Item item = Item.builder()
+        ItemDTO item = ItemDTO.builder()
                 .id(1L)
                 .name("셔츠")
                 .price(1000)
@@ -58,7 +57,7 @@ public class ItemDetailRegistrationRequestTest {
 
     @Test
     void shouldFailWhenQuantityIsNull() {
-        Item item = Item.builder()
+        ItemDTO item = ItemDTO.builder()
                 .id(1L)
                 .name("셔츠")
                 .price(1000)
@@ -79,7 +78,7 @@ public class ItemDetailRegistrationRequestTest {
 
     @Test
     void shouldFailWhenQuantityLessThanZero() {
-        Item item = Item.builder()
+        ItemDTO item = ItemDTO.builder()
                 .id(1L)
                 .name("셔츠")
                 .price(1000)

@@ -1,9 +1,9 @@
 package com.server.side.item.service.impl;
 
-import com.server.side.item.domain.Item;
 import com.server.side.item.domain.ItemDetail;
-import com.server.side.item.repository.ItemDetailRepository;
+import com.server.side.item.dto.ItemDTO;
 import com.server.side.item.dto.ItemDetailRegistrationRequest;
+import com.server.side.item.repository.ItemDetailRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ public class ItemDetailServiceImplTest {
 
     @Test
     void addItemDetailThenReturnSame() {
-        Item item = Item.builder()
+        ItemDTO item = ItemDTO.builder()
                 .id(1L)
                 .name("셔츠")
                 .price(1000)
@@ -40,6 +40,7 @@ public class ItemDetailServiceImplTest {
                 .information(List.of("img1", "img2"))
                 .build();
         ItemDetailRegistrationRequest request1 = ItemDetailRegistrationRequest.builder()
+                                                                            .id(1L)
                                                                             .item(item)
                                                                             .option("L")
                                                                             .quantity(100)
@@ -62,6 +63,5 @@ public class ItemDetailServiceImplTest {
 
         verify(itemDetailRepository, times(1)).save(request2.toEntity());
     }
-
 
 }
