@@ -26,18 +26,6 @@ public class ItemDTO {
 
     private List<String> information;
 
-    public static ItemWithDetailsDTO fromEntities(Item item) {
-        return ItemWithDetailsDTO.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .price(item.getPrice())
-                .category(item.getCategory())
-                .description(item.getDescription())
-                .image(item.getImage())
-                .information(item.getInformation())
-                .build();
-    }
-
     public static ItemDTO fromEntity(Item item) {
         return ItemDTO.builder()
                 .id(item.getId())
