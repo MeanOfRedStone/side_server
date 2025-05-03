@@ -25,6 +25,7 @@ public class ItemDetailRegistrationRequest {
 
     public ItemDetail toEntity() {
         return ItemDetail.builder()
+                .id(this.id)
                 .item(this.item.toEntity())
                 .option(this.option)
                 .quantity(this.quantity)
@@ -33,6 +34,7 @@ public class ItemDetailRegistrationRequest {
 
     public ItemDetailDTO toResponse() {
         return ItemDetailDTO.builder()
+                .id(this.id)
                 .item(ItemDTO.fromEntity(this.item.toEntity()))
                 .option(this.option)
                 .quantity(this.quantity)
