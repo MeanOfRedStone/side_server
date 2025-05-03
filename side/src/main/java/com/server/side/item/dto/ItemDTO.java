@@ -12,11 +12,11 @@ import java.util.List;
 @EqualsAndHashCode
 public class ItemDTO {
 
-    private long id;
+    private Long id;
 
     private String name;
 
-    private int price;
+    private Integer price;
 
     private String category;
 

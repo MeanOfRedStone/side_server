@@ -11,13 +11,13 @@ import lombok.*;
 @EqualsAndHashCode
 public class ItemDetailDTO {
 
-    private long id;
+    private Long id;
 
     private ItemDTO item;
 
     private String option;
 
-    private int quantity;
+    private Integer quantity;
 
     public static ItemDetailDTO fromEntity(ItemDetail itemDetail) {
         return ItemDetailDTO.builder()

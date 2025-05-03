@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 public class ItemWithDetailsDTO {
 
-    private long id;
+    private Long id;
 
     private String name;
 
-    private int price;
+    private Integer price;
 
     private String category;
 
