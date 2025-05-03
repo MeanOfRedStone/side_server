@@ -36,6 +36,7 @@ public class ItemWithDetailsRegistrationRequest {
 
     public Item toItemEntity() {
         return Item.builder()
+                .id(this.id)
                 .name(this.name)
                 .price(this.price)
                 .category(this.category)
