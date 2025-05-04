@@ -1,13 +1,13 @@
-package com.server.side.item.service.impl;
+package com.server.side.application.itemwithdetails.service.impl;
 
 import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemDetail;
-import com.server.side.item.repository.ItemDetailRepository;
+import com.server.side.itemdetail.domain.ItemDetail;
+import com.server.side.itemdetail.repository.ItemDetailRepository;
 import com.server.side.item.repository.ItemRepository;
-import com.server.side.item.dto.ItemWithDetailsDTO;
-import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
-import com.server.side.item.service.ItemWithDetailsService;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsDTO;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.application.itemwithdetails.service.ItemWithDetailsService;
 import com.server.side.util.FileManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.server.side.item.dto.ItemWithDetailsDTO.fromEntities;
+import static com.server.side.application.itemwithdetails.dto.ItemWithDetailsDTO.fromEntities;
 
 @Service
 @RequiredArgsConstructor

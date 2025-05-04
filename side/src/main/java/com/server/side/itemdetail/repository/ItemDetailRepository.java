@@ -1,6 +1,6 @@
-package com.server.side.item.repository;
+package com.server.side.itemdetail.repository;
 
-import com.server.side.item.domain.ItemDetail;
+import com.server.side.itemdetail.domain.ItemDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

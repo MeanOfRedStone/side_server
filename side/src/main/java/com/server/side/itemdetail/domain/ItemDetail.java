@@ -1,5 +1,6 @@
-package com.server.side.item.domain;
+package com.server.side.itemdetail.domain;
 
+import com.server.side.item.domain.Item;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

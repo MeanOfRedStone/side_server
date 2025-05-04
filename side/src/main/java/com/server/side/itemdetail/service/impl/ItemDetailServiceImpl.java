@@ -1,13 +1,13 @@
-package com.server.side.item.service.impl;
+package com.server.side.itemdetail.service.impl;
 
-import com.server.side.item.repository.ItemDetailRepository;
-import com.server.side.item.dto.ItemDetailDTO;
-import com.server.side.item.dto.ItemDetailRegistrationRequest;
-import com.server.side.item.service.ItemDetailService;
+import com.server.side.itemdetail.repository.ItemDetailRepository;
+import com.server.side.itemdetail.dto.ItemDetailDTO;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
+import com.server.side.itemdetail.service.ItemDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static com.server.side.item.dto.ItemDetailDTO.fromEntity;
+import static com.server.side.itemdetail.dto.ItemDetailDTO.fromEntity;
 
 @Service
 @RequiredArgsConstructor

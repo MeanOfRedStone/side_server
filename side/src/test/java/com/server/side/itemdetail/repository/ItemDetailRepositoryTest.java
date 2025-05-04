@@ -1,10 +1,11 @@
-package com.server.side.item.repository;
+package com.server.side.itemdetail.repository;
 
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemDetail;
+import com.server.side.itemdetail.domain.ItemDetail;
 import com.server.side.item.dto.ItemDTO;
-import com.server.side.item.dto.ItemDetailRegistrationRequest;
-import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.item.repository.ItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

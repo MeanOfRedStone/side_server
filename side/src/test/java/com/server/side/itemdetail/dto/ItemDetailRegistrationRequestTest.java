@@ -1,5 +1,6 @@
-package com.server.side.item.dto;
+package com.server.side.itemdetail.dto;
 
+import com.server.side.item.dto.ItemDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

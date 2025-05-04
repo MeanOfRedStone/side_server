@@ -1,13 +1,13 @@
-package com.server.side.item.service.impl;
+package com.server.side.application.itemwithdetails.service.impl;
 
 import com.server.side.config.FileProperties;
 import com.server.side.exception.FileValidationException;
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemDetail;
-import com.server.side.item.dto.ItemDetailRegistrationRequest;
-import com.server.side.item.dto.ItemWithDetailsDTO;
-import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
-import com.server.side.item.repository.ItemDetailRepository;
+import com.server.side.itemdetail.domain.ItemDetail;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsDTO;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.itemdetail.repository.ItemDetailRepository;
 import com.server.side.item.repository.ItemRepository;
 import com.server.side.util.FileManager;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static com.server.side.item.dto.ItemDTO.fromEntity;
-import static com.server.side.item.dto.ItemWithDetailsDTO.fromEntities;
+import static com.server.side.application.itemwithdetails.dto.ItemWithDetailsDTO.fromEntities;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

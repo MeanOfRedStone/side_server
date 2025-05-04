@@ -1,9 +1,9 @@
-package com.server.side.item.service.impl;
+package com.server.side.itemdetail.service.impl;
 
-import com.server.side.item.domain.ItemDetail;
+import com.server.side.itemdetail.domain.ItemDetail;
 import com.server.side.item.dto.ItemDTO;
-import com.server.side.item.dto.ItemDetailRegistrationRequest;
-import com.server.side.item.repository.ItemDetailRepository;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
+import com.server.side.itemdetail.repository.ItemDetailRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.server.side.item.dto.ItemDetailDTO.fromEntity;
+import static com.server.side.itemdetail.dto.ItemDetailDTO.fromEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

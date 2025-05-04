@@ -1,7 +1,7 @@
-package com.server.side.item.service;
+package com.server.side.application.itemwithdetails.service;
 
-import com.server.side.item.dto.ItemWithDetailsDTO;
-import com.server.side.item.dto.ItemWithDetailsRegistrationRequest;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsDTO;
+import com.server.side.application.itemwithdetails.dto.ItemWithDetailsRegistrationRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

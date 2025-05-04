@@ -1,7 +1,9 @@
-package com.server.side.item.dto;
+package com.server.side.application.itemwithdetails.dto;
 
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemDetail;
+import com.server.side.item.dto.ItemDTO;
+import com.server.side.itemdetail.domain.ItemDetail;
+import com.server.side.itemdetail.dto.ItemDetailDTO;
 import lombok.*;
 
 import java.util.List;

@@ -1,7 +1,9 @@
-package com.server.side.item.dto;
+package com.server.side.application.itemwithdetails.dto;
 
 import com.server.side.item.domain.Item;
-import com.server.side.item.domain.ItemDetail;
+import com.server.side.item.dto.ItemRegistrationRequest;
+import com.server.side.itemdetail.domain.ItemDetail;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
