@@ -25,7 +25,7 @@ public class ItemRegistrationRequest {
     private String category;
     @NotBlank(message = "{item.description.notblank}")
     private String description;
-
+    @NotBlank(message = "{item.image.notblank}")
     private String image;
 
     private List<String> information;

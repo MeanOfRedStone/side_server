@@ -179,4 +179,49 @@ public class ItemRegistrationRequestTest {
                 && v.getMessage().equals("{item.description.notblank}"));
     }
 
+    @Test
+    void shouldFailWhenImageIsBlank() {
+        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(0)
+                .category("상의")
+                .description("멋진 셔츠")
+                .image(null)
+                .information(List.of("설명.png", "설명2.png"))
+                .build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+
+        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("image")
+            && v.getMessage().equals("{item.image.notblank}"));
+
+        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(0)
+                .category("상의")
+                .description("멋진 셔츠")
+                .image("")
+                .information(List.of("설명.png", "설명2.png"))
+                .build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
+
+        assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("image")
+        && v.getMessage().equals("{item.image.notblank}"));
+
+        ItemRegistrationRequest request3 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(0)
+                .category("상의")
+                .description("멋진 셔츠")
+                .image(" ")
+                .information(List.of("설명.png", "설명2.png"))
+                .build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
+
+        assertThat(violations3).anyMatch(v -> v.getPropertyPath().toString().equals("image")
+        && v.getMessage().equals("{item.image.notblank}"));
+    }
+
 }
