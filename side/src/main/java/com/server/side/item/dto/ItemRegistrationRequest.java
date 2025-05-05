@@ -27,7 +27,7 @@ public class ItemRegistrationRequest {
     private String description;
     @NotBlank(message = "{item.image.notblank}")
     private String image;
-
+    @NotNull(message = "{item.information.notnull}")
     private List<String> information;
 
     public Item toEntity() {

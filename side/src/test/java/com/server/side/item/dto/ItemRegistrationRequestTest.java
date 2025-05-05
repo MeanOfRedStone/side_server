@@ -224,4 +224,21 @@ public class ItemRegistrationRequestTest {
         && v.getMessage().equals("{item.image.notblank}"));
     }
 
+    @Test
+    void shouldFailWhenInformationIsNull() {
+        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+                .name("셔츠")
+                .price(0)
+                .category("상의")
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(null)
+                .build();
+
+        Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
+
+        assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("information")
+         && v.getMessage().equals("{item.information.notnull}"));
+    }
+
 }
