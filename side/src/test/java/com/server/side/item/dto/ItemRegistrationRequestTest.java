@@ -5,6 +5,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +20,9 @@ public class ItemRegistrationRequestTest {
                 .name(null)
                 .price(1000)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png")).build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
 
@@ -31,7 +34,9 @@ public class ItemRegistrationRequestTest {
                 .name("")
                 .price(1000)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png")).build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
 
@@ -42,7 +47,9 @@ public class ItemRegistrationRequestTest {
                 .name(" ")
                 .price(1000)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png")).build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
 
@@ -56,20 +63,25 @@ public class ItemRegistrationRequestTest {
                 .name("셔츠")
                 .price(null)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png")).build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
 
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("price")
                 && v.getMessage().equals("{item.price.notnull}"));
     }
+
     @Test
     void shouldFailWhenPriceLessThanZero() {
         ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
                 .name("셔츠")
                 .price(-1)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png")).build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
 
@@ -84,6 +96,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category(null)
                 .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
@@ -96,6 +110,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category("")
                 .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
@@ -108,6 +124,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category(" ")
                 .description("멋진 셔츠")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
@@ -123,6 +141,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category("상의")
                 .description(null)
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations1 = validator.validate(request1);
@@ -135,6 +155,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category("상의")
                 .description("")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations2 = validator.validate(request2);
@@ -147,6 +169,8 @@ public class ItemRegistrationRequestTest {
                 .price(0)
                 .category("상의")
                 .description(" ")
+                .image("셔츠.png")
+                .information(List.of("설명.png", "설명2.png"))
                 .build();
 
         Set<ConstraintViolation<ItemRegistrationRequest>> violations3 = validator.validate(request3);
