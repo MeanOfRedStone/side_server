@@ -71,11 +71,17 @@ public class ItemWithDetailsRegistrationRequestTest {
 
     @Test
     void shouldFailWhenPriceIsNull() {
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(null)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .itemDetails(List.of(detailRequest1)).build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
@@ -84,11 +90,17 @@ public class ItemWithDetailsRegistrationRequestTest {
     }
     @Test
     void shouldFailWhenPriceLessThanZero() {
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(-1)
                 .category("상의")
-                .description("멋진 셔츠").build();
+                .description("멋진 셔츠")
+                .itemDetails(List.of(detailRequest1)).build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
 
@@ -98,11 +110,17 @@ public class ItemWithDetailsRegistrationRequestTest {
 
     @Test
     void shouldFailWhenCategoryIsBlank() {
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category(null)
                 .description("멋진 셔츠")
+                .itemDetails(List.of(detailRequest1))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
@@ -110,11 +128,17 @@ public class ItemWithDetailsRegistrationRequestTest {
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("category")
                 && v.getMessage().equals("{item.category.notblank}"));
 
+        ItemDetailRegistrationRequest detailRequest2 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("")
                 .description("멋진 셔츠")
+                .itemDetails(List.of(detailRequest2))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations2 = validator.validate(request2);
@@ -122,11 +146,17 @@ public class ItemWithDetailsRegistrationRequestTest {
         assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("category")
                 && v.getMessage().equals("{item.category.notblank}"));
 
+        ItemDetailRegistrationRequest detailRequest3 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request3 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category(" ")
                 .description("멋진 셔츠")
+                .itemDetails(List.of(detailRequest3))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations3 = validator.validate(request3);
@@ -137,11 +167,17 @@ public class ItemWithDetailsRegistrationRequestTest {
 
     @Test
     void shouldFailWhenDescriptionIsBlank() {
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description(null)
+                .itemDetails(List.of(detailRequest1))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations1 = validator.validate(request1);
@@ -149,11 +185,17 @@ public class ItemWithDetailsRegistrationRequestTest {
         assertThat(violations1).anyMatch(v -> v.getPropertyPath().toString().equals("description")
         && v.getMessage().equals("{item.description.notblank}"));
 
+        ItemDetailRegistrationRequest detailRequest2 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request2 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description("")
+                .itemDetails(List.of(detailRequest2))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations2 = validator.validate(request2);
@@ -161,11 +203,17 @@ public class ItemWithDetailsRegistrationRequestTest {
         assertThat(violations2).anyMatch(v -> v.getPropertyPath().toString().equals("description")
                 && v.getMessage().equals("{item.description.notblank}"));
 
+        ItemDetailRegistrationRequest detailRequest3 = ItemDetailRegistrationRequest.builder()
+                .id(1L)
+                .option("L")
+                .quantity(100)
+                .build();
         ItemWithDetailsRegistrationRequest request3 = ItemWithDetailsRegistrationRequest.builder()
                 .name("셔츠")
                 .price(0)
                 .category("상의")
                 .description(" ")
+                .itemDetails(List.of(detailRequest3))
                 .build();
 
         Set<ConstraintViolation<ItemWithDetailsRegistrationRequest>> violations3 = validator.validate(request3);
