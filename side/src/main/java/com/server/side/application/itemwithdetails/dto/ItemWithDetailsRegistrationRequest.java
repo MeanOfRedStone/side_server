@@ -29,10 +29,6 @@ public class ItemWithDetailsRegistrationRequest {
     private String category;
     @NotBlank(message = "{item.description.notblank}")
     private String description;
-
-    private String image;
-
-    private List<String> information;
     @NotNull(message = "{item.itemDetails.notnull}")
     private List<ItemDetailRegistrationRequest> itemDetails;
 
@@ -43,8 +39,6 @@ public class ItemWithDetailsRegistrationRequest {
                 .price(this.price)
                 .category(this.category)
                 .description(this.description)
-                .image(this.image)
-                .information(this.information)
                 .build();
     }
 
@@ -65,8 +59,6 @@ public class ItemWithDetailsRegistrationRequest {
                 .price(this.price)
                 .category(this.category)
                 .description(this.description)
-                .image(this.image)
-                .information(this.information)
                 .build();
     }
 }
