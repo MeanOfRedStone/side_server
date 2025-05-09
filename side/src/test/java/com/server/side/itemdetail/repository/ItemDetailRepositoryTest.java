@@ -1,24 +1,21 @@
 package com.server.side.itemdetail.repository;
 
 import com.server.side.item.domain.Item;
-import com.server.side.itemdetail.domain.ItemDetail;
 import com.server.side.item.dto.ItemDTO;
-import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
-import com.server.side.application.itemwithdetails.dto.ItemWithDetailsRegistrationRequest;
 import com.server.side.item.repository.ItemRepository;
+import com.server.side.itemdetail.domain.ItemDetail;
+import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Rollback
 public class ItemDetailRepositoryTest {
 
     @Autowired
@@ -29,36 +26,55 @@ public class ItemDetailRepositoryTest {
     @DisplayName("유효한 itemId를 주면, 해당 itemId를 가진 모든 ItemDetail을 반환한다")
     @Test
     void givenValidItemIdWhenFindAllByItemIdThenReturnsMatchingItems() {
-        ItemDetailRegistrationRequest detailRequest = ItemDetailRegistrationRequest.builder()
-                .option("L")
-                .quantity(100)
-                .build();
-        List<ItemDetailRegistrationRequest> detailsRegistrationRequest1 = List.of(detailRequest);
-        ItemWithDetailsRegistrationRequest request1 = ItemWithDetailsRegistrationRequest.builder()
+        Item itemEntity = Item.builder()
                 .name("셔츠")
                 .price(1000)
                 .category("상의")
                 .description("멋진 셔츠")
                 .image("셔츠.png")
                 .information(List.of("img1", "img2"))
-                .itemDetails(detailsRegistrationRequest1)
                 .build();
-
-        Item item1 = itemRepository.save(request1.toItemEntity());
-
+        ItemDTO item = ItemDTO.fromEntity(itemRepository.save(itemEntity));
+        ItemDetailRegistrationRequest detailRequest1 = ItemDetailRegistrationRequest.builder()
+                .item(item)
+                .option("L")
+                .quantity(100)
+                .build();
+        List<ItemDetailRegistrationRequest> detailsRegistrationRequest1 = List.of(detailRequest1);
         List<ItemDetail> details1 = detailsRegistrationRequest1.stream()
-                        .map(itemDetailRegistrationRequest -> {
-                                itemDetailRegistrationRequest.setItem(ItemDTO.fromEntity(item1));
-                                return itemDetailRegistrationRequest.toEntity();
-                        })
-                                .collect(Collectors.toList());
-        itemDetailRepository.saveAll(details1);
+                .map(detail -> ItemDetail.builder()
+                        .item(itemEntity)
+                        .option(detail.getOption())
+                        .quantity(detail.getQuantity())
+                        .build())
+                .toList();
 
-        List<ItemDetail> expected1 = itemDetailRepository.findAllByItemId(item1.getId());
-        for(int i = 0; i < expected1.size(); i++) {
-            assertEquals(details1.get(i).getId(), expected1.get(i).getId());
-            assertEquals(details1.get(i).getQuantity(), expected1.get(i).getQuantity());
-            assertEquals(details1.get(i).getOption(), expected1.get(i).getOption());
-        }
+        List<ItemDetail> expected = new ArrayList<>();
+        List<ItemDetail> saved1 = itemDetailRepository.saveAll(details1);
+        expected.addAll(saved1);
+        List<ItemDetail> result1 = itemDetailRepository.findAllByItemId(item.getId());
+
+        assertThat(result1).containsExactlyInAnyOrderElementsOf(expected);
+
+        ItemDetailRegistrationRequest detailRequest2 = ItemDetailRegistrationRequest.builder()
+                .item(item)
+                .option("M")
+                .quantity(50)
+                .build();
+        List<ItemDetailRegistrationRequest> detailsRegistrationRequest2 = List.of(detailRequest2);
+        List<ItemDetail> details2 = detailsRegistrationRequest2.stream()
+                .map(detail -> ItemDetail.builder()
+                        .item(itemEntity)
+                        .option(detail.getOption())
+                        .quantity(detail.getQuantity())
+                        .build())
+                .toList();
+
+
+        List<ItemDetail> saved2 = itemDetailRepository.saveAll(details2);
+        expected.addAll(saved2);
+        List<ItemDetail> result2 = itemDetailRepository.findAllByItemId(item.getId());
+
+        assertThat(result2).containsExactlyInAnyOrderElementsOf(expected);
     }
 }
