@@ -81,7 +81,7 @@ public class ItemServiceImplTest {
 
     @Test
     void findAllItemsThenReturnAllItemDTOs() {
-        ItemRegistrationRequest request1 = ItemRegistrationRequest.builder()
+        Item request1 = Item.builder()
                 .id(1L)
                 .name("셔츠")
                 .price(1000)
@@ -91,7 +91,7 @@ public class ItemServiceImplTest {
                 .information(List.of("img1", "img2"))
                 .build();
 
-        ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
+        Item request2 = Item.builder()
                 .id(2L)
                 .name("청바지")
                 .price(2000)
@@ -101,10 +101,10 @@ public class ItemServiceImplTest {
                 .information(List.of("img1", "img2"))
                 .build();
 
-        List<Item> items1 = List.of(request1.toEntity(), request2.toEntity());
+        List<Item> items1 = List.of(request1, request2);
         given(itemRepository.findAll()).willReturn(items1);
 
-        List<ItemDTO> expected1 = List.of(fromEntity(request1.toEntity()), fromEntity(request2.toEntity()));
+        List<ItemDTO> expected1 = List.of(fromEntity(request1), fromEntity(request2));
         List<ItemDTO> result1 = itemService.searchAllItems();
 
         assertEquals(expected1.size(), result1.size());
