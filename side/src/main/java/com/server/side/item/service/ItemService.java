@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemDTO addItem(ItemRegistrationRequest request);
+    ItemDTO addItem(ItemRegistrationRequest request, String image, List<String> information);
 
     List<ItemDTO> searchAllItems();
 }

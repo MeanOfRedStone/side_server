@@ -18,8 +18,14 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository repository;
 
     @Override
-    public ItemDTO addItem(ItemRegistrationRequest request) {
-        return ItemDTO.fromEntity(repository.save(request.toEntity()));
+    public ItemDTO addItem(ItemRegistrationRequest request, String image, List<String> information) {
+        return ItemDTO.fromEntity(repository.save(Item.builder()
+                .name(request.getName())
+                .price(request.getPrice())
+                .category(request.getCategory())
+                .description(request.getDescription())
+                .image(image)
+                .information(information).build()));
     }
 
     @Override

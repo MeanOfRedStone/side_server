@@ -37,15 +37,23 @@ public class ItemServiceImplTest {
                 .price(1000)
                 .category("상의")
                 .description("멋진 셔츠")
-                .image("셔츠.png")
-                .information(List.of("설명1.png", "설명2.png"))
                 .build();
+        String image1 = "셔츠.png";
+        List<String> information1 = List.of("설명1.png", "설명2.png");
 
         given(itemRepository.save(any(Item.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
-        ItemDTO result1 = itemService.addItem(request1);
-        assertItem(ItemDTO.fromEntity(request1.toEntity()), result1);
+        ItemDTO expected1 = ItemDTO.builder()
+                .name(request1.getName())
+                .price(request1.getPrice())
+                .category(request1.getCategory())
+                .description(request1.getDescription())
+                .image(image1)
+                .information(information1)
+                .build();
+        ItemDTO result1 = itemService.addItem(request1, image1, information1);
+        assertItem(expected1, result1);
         verify(itemRepository, times(1)).save(any(Item.class));
 
         ItemRegistrationRequest request2 = ItemRegistrationRequest.builder()
@@ -53,12 +61,20 @@ public class ItemServiceImplTest {
                 .price(2000)
                 .category("하의")
                 .description("멋진 바지")
-                .image("청바지.png")
-                .information(List.of("설명3.png", "설명4.png"))
                 .build();
+        String image2= "청바지.png";
+        List<String> information2 = List.of("설명3.png", "설명4.png");
 
-        ItemDTO result2 = itemService.addItem(request2);
-        assertItem(ItemDTO.fromEntity(request2.toEntity()), result2);
+        ItemDTO expected2 = ItemDTO.builder()
+                .name(request2.getName())
+                .price(request2.getPrice())
+                .category(request2.getCategory())
+                .description(request2.getDescription())
+                .image(image2)
+                .information(information2)
+                .build();
+        ItemDTO result2 = itemService.addItem(request2, image2, information2);
+        assertItem(expected2, result2);
 
         verify(itemRepository, times(2)).save(any(Item.class));
     }
