@@ -1,6 +1,7 @@
 package com.server.side.application.itemwithdetails.dto;
 
 import com.server.side.item.domain.Item;
+import com.server.side.item.dto.ItemDTO;
 import com.server.side.item.dto.ItemRegistrationRequest;
 import com.server.side.itemdetail.domain.ItemDetail;
 import com.server.side.itemdetail.dto.ItemDetailRegistrationRequest;
@@ -61,4 +62,15 @@ public class ItemWithDetailsRegistrationRequest {
                 .description(this.description)
                 .build();
     }
+
+    public List<ItemDetailRegistrationRequest> toItemDetailsRegistrationRequest(ItemDTO itemDTO) {
+        return itemDetails.stream()
+                .map(itemDetail -> ItemDetailRegistrationRequest.builder()
+                        .item(itemDTO)
+                        .option(itemDetail.getOption())
+                        .quantity(itemDetail.getQuantity())
+                        .build())
+                .toList();
+    }
+
 }
